@@ -56,7 +56,8 @@ app.use(
 app.use(bodyParser.json());
 
 //
-app.use(express.static(__dirname + '/Resources'));
+app.use(express.static(__dirname + '/resources'));
+
 
 //
 app.use(
