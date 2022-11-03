@@ -1,0 +1,31 @@
+<%- include ('../partials/header') %> <%- include ('../partials/menu') %>
+<main>
+  <div class="container">
+    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+    <div class="col"><%- include ('../partials/message') %></div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Image</th>
+          <th scope="col">Date</th>
+          <th scope="col">Time</th>
+          <th scope="col">Book</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% results.data._embedded.events.forEach(function(event){ %>
+          <tr>
+            <td> <%=event.name%></td>
+            <td> <img class="rounded h-50 w-50" object-fit="cover" src=<%=event.images[0].url%> alt="Card image"></td>
+            <td> <%=event.dates.start.localDate%></td>
+            <td> <%=event.dates.start.localTime%></td>
+            <td> <a href=<%=event.url%>>Book Now</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>

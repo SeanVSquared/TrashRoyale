@@ -1,0 +1,27 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<main>
+  <div class="container">
+    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+    <div class="col"><%- include ('../partials/message') %></div>
+    <form action="/register" method="POST">
+        <!-- Username input -->
+        <div class="form-outline mb-4">
+            <input name="username" type="username" id="form2Example1" class="form-control" />
+            <label class="form-label" for="form2Example1">username</label>
+        </div>
+      
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+          <input name="password" type="password" id="form2Example2" class="form-control" />
+          <label class="form-label" for="form2Example2">password</label>
+        </div>
+      
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+    </form>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
