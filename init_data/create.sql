@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS users(
   max_streak SMALLINT,
   daily_challenges_completed SMALLINT,
   random_challenges_completed SMALLINT,
-  clash_tag VARCHAR(12)
+  clash_tag VARCHAR(15)
 );
 
 -- create a new table to store RANDOM challenges that have been given out

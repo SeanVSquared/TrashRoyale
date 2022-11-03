@@ -65,6 +65,13 @@ app.use(
     })
 );
 
+// GET request to /random (for testing's sake)
+app.get('/random', (req, res) => {
+  // Render the RANDOM CHALLENGE page
+  console.log("attempting to render page random");
+  res.render('pages/random');
+});
+
 // GET Request for /home
 app.get('/home', async (req, res) => {
   // Test cases to verify user session
@@ -98,9 +105,9 @@ app.get('/home', async (req, res) => {
     }
   })
 
-  
-      var worstClan = clanRankings.data.items[998];
-      var worstClanTag = worstClan.tag.replace('#', '%23');
+
+  var worstClan = clanRankings.data.items[998];
+  var worstClanTag = worstClan.tag.replace('#', '%23');
   
   const worstClanInfo = await axios({
   
