@@ -65,6 +65,10 @@ app.use(
     })
 );
 
+app.get('/login', (req, res) => {
+  res.render('pages/login');
+});
+
 // GET request to /random (for testing's sake)
 app.get('/random', (req, res) => {
   // Render the RANDOM CHALLENGE page
