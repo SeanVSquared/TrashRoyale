@@ -1,3 +1,10 @@
+
+-- Test
+INSERT INTO attributes (attribute_id, attribute) VALUES
+(1, 'One'),
+(2, 'two'),
+(3, 'three');
+
 -- List of Attributes:
 
 -- Spell 
