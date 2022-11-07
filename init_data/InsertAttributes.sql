@@ -1,9 +1,9 @@
 
 -- Test
-INSERT INTO attributes (attribute_id, attribute) VALUES
-(1, 'One'),
-(2, 'two'),
-(3, 'three');
+INSERT INTO attributes (attribute) VALUES
+('ranged'),
+('spell'),
+('bean burrito');
 
 -- List of Attributes:
 
