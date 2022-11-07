@@ -1,9 +1,17 @@
 
 -- Test
+-- INSERT INTO attributes (attribute) VALUES
+-- ('ranged'),
+-- ('spell'),
+-- ('bean burrito');
+-- ALTER TABLE ebebbeebebebebe
+
+
 INSERT INTO attributes (attribute) VALUES
 ('ranged'),
 ('spell'),
 ('bean burrito');
+
 
 -- List of Attributes:
 

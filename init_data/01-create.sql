@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS cards(
 -- create a new table attributes, that holds and controls all custom data associated with cards
 CREATE TABLE IF NOT EXISTS attributes(
   atribute_id SERIAL PRIMARY KEY,
-  attribute VARCHAR(60)
+  attribute VARCHAR(120)
 );
 
 -- cards to attributes
@@ -93,4 +93,3 @@ CREATE TABLE IF NOT EXISTS cards_to_attributes(
   atribute_id SMALLINT,
   card_id SMALLINT
 );
-
