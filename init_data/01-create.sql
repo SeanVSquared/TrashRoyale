@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS dailychallenges(
   card_id_6 SMALLINT,
   card_id_7 SMALLINT,
   card_id_8 SMALLINT,
-  challenge_date DATE
+  challenge_date DATE,
 );
 
 -- create a new table to convert from a user's serial ID to the challenge ID based on
@@ -76,7 +76,11 @@ CREATE TABLE IF NOT EXISTS users_to_randoms(
 -- create a new table cards, with columns for id, name, max_level, icon_url, cost, usage, winrate
 CREATE TABLE IF NOT EXISTS cards(
   card_id SERIAL PRIMARY KEY,
+<<<<<<<< HEAD:init_data/01-create.sql
   card_name VARCHAR(60) UNIQUE NOT NULL,
+========
+  name VARCHAR(60), --UNIQUE NOT NULL
+>>>>>>>> d32a957 (Prelim card sql and insert table):init_data/01_create.sql
   max_level SMALLINT,
   icon_url VARCHAR(360),
   cost SMALLINT,
@@ -87,7 +91,11 @@ CREATE TABLE IF NOT EXISTS cards(
 -- create a new table attributes, that holds and controls all custom data associated with cards
 CREATE TABLE IF NOT EXISTS attributes(
   atribute_id SERIAL PRIMARY KEY,
+<<<<<<<< HEAD:init_data/01-create.sql
   attribute VARCHAR(120)
+========
+  attribute VARCHAR(60)
+>>>>>>>> d32a957 (Prelim card sql and insert table):init_data/01_create.sql
 );
 
 -- cards to attributes
@@ -95,4 +103,7 @@ CREATE TABLE IF NOT EXISTS cards_to_attributes(
   atribute_id SMALLINT,
   card_id SMALLINT
 );
+<<<<<<<< HEAD:init_data/01-create.sql
 
+========
+>>>>>>>> d32a957 (Prelim card sql and insert table):init_data/01_create.sql
