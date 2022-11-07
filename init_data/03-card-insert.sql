@@ -5,12 +5,19 @@
 -- ('spell'),
 -- ('bean burrito');
 -- ALTER TABLE ebebbeebebebebe
+INSERT INTO cards (card_name, cost) VALUES ('Giant', 5);
+INSERT INTO cards (card_name, cost) VALUES ('Hog Rider', 4);
 
 
 INSERT INTO attributes (attribute) VALUES
 ('ranged'),
 ('spell'),
 ('bean burrito');
+
+-- SELECT get_card_id_by_name("Hog Rider");
+
+-- CALL add_card_attributes(99, '{"a","b","c"}');
+
 
 
 -- List of Attributes:

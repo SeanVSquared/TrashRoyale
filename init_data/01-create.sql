@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS users_to_randoms(
 -- create a new table cards, with columns for id, name, max_level, icon_url, cost, usage, winrate
 CREATE TABLE IF NOT EXISTS cards(
   card_id SERIAL PRIMARY KEY,
-  card_name VARCHAR(60), --UNIQUE NOT NULL
+  card_name VARCHAR(60) UNIQUE NOT NULL,
   max_level SMALLINT,
   icon_url VARCHAR(360),
   cost SMALLINT,
@@ -93,3 +93,43 @@ CREATE TABLE IF NOT EXISTS cards_to_attributes(
   atribute_id SMALLINT,
   card_id SMALLINT
 );
+
+-- CREATE OR REPLACE FUNCTION add_card_attribute(card_id, attribute_id)
+-- RETURNS void  
+-- LANGUAGE plpgsql  
+-- AS $$ 
+-- DECLARE    
+-- declaration;    
+-- [...] -- variable declaration   
+--  BEGIN    
+-- < function_body >    
+-- [...]  -- logic  
+-- RETURN { variable_name | value }    
+-- END;   
+-- $$  
+
+-- CREATE FUNCTION delete_attributes() RETURNS void
+-- AS 'DELETE FROM emp WHERE salary < 0;'
+-- LANGUAGE SQL;
+
+-- CREATE FUNCTION get_card_id_by_name(_card_name VARCHAR(60)) RETURNS SMALLINT
+-- LANGUAGE plpgsql
+-- AS
+-- $$
+-- DECLARE  
+--   ret SMALLINT;  
+-- BEGIN
+--   SELECT card_id
+--   INTO ret
+--   FROM cards
+--   WHERE card_name = _card_name;
+--   RETURN ret.card_id;
+-- END;
+-- $$;
+
+-- CREATE PROCEDURE add_card_attributes(card_name VARCHAR(60), attribute_id VARCHAR(120)[])
+-- LANGUAGE plpgsql
+-- BEGIN ATOMIC
+--   INSERT INTO attributes VALUES (card_id);
+--   INSERT INTO cards_to_attributes VALUES (card_id);
+-- END;
