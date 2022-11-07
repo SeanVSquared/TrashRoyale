@@ -1,12 +1,3 @@
-
--- Test
--- INSERT INTO attributes (attribute) VALUES
--- ('ranged'),
--- ('spell'),
--- ('bean burrito');
--- ALTER TABLE ebebbeebebebebe
-
-
 -- List of Attributes:
 
 -- Spell 
