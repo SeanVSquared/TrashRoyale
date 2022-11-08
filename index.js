@@ -1,11 +1,21 @@
+// import the package express for API purposes
 const express = require('express');
 const app = express();
+
+// Use pg-promise to make connections to the database as previously
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
+
+// package to help set the session object. USE req.session!
 const session = require('express-session');
+
+// Package to hash user passwords (very important!)
 const bcrypt = require('bcrypt');
+
+// Package Axios: Make HTTP requests to an external server from our server
 const axios = require('axios');
 
+// database configuration
 const dbConfig = {
     host: 'db',
     port: 5432,
@@ -14,38 +24,56 @@ const dbConfig = {
     password: process.env.POSTGRES_PASSWORD,
 };
 
+// Use pg-promise and make a handy shorthand constant
 const db = pgp(dbConfig);
 
-// test your database
+// Database connection test
 db.connect()
-    .then(obj => {
-      console.log('Database connection successful'); // you can view this message in the docker compose logs
-      obj.done(); // success, release the connection;
-    })
-    .catch(error => {
-        console.log('ERROR:', error.message || error);
-    });
+  .then(obj => {
+    // If the connection is successful, print to the console
+    console.log('Database connection successful');
+    // use the done function to close the database connection
+    obj.done();
+  })
+  .catch(error => {
+    // If there are any errors, print them to the console
+    console.log('ERROR:', error.message || error);
+});
 
+// Set the view engine to EJS
 app.set('view engine', 'ejs');
 
+// Initializing Session variables
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        saveUninitialized: false,
-        resave: false,
-    })
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+  })
 );
 
+// Specify that we are using json to parse the body of a request
 app.use(bodyParser.json());
 
+//
 app.use(express.static(__dirname + '/resources'));
 
+
+//
 app.use(
     bodyParser.urlencoded({
         extended: true,
     })
 );
 
+// GET request to /random (for testing's sake)
+app.get('/random', (req, res) => {
+  // Render the RANDOM CHALLENGE page
+  console.log("attempting to render page random");
+  res.render('pages/random');
+});
+
+// GET Request for /home
 app.get('/home', async (req, res) => {
     //console.log(req.session.user.api_key);
     //console.log(req.session.user.tag);
