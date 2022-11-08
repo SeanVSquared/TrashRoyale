@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <h1>This is the card test page</h1>
     <table class="table table-hover border mt-4">
-        
+      
         <thead>
             <th class="col-auto align-top" scope="col">ID</th>
             <th class="col-auto align-top" scope="col">NAME</th>
@@ -27,6 +27,7 @@
                     <td> <%- cards[i].usage %> </td>
                     <td> <%- cards[i].winrate %> </td>
                     <td> <img src="<%-cards[i].icon_url%>" width="50px"> </td>
+
                 </tr>
             <% } %>
         </tbody>
