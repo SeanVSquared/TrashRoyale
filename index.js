@@ -68,6 +68,7 @@ app.use(
 // GET request to /random (for testing's sake)
 app.get('/random', (req, res) => {
   // Render the RANDOM CHALLENGE page
+  // Parse the request headers to see if the user is attempting to render a pre-existing challenge
   console.log("attempting to render page random");
   res.render('pages/random');
 });
