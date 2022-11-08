@@ -111,7 +111,7 @@ app.get('/home', async (req, res) => {
             method: 'get',
             dataType:'json',
             headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImM2MTZiY2MwLWE4NWItNDYwMC04YWZjLTZmNTFjZGZjNGIzYSIsImlhdCI6MTY2Nzc2MTcwNCwic3ViIjoiZGV2ZWxvcGVyLzE1YzYxMjhiLTc5NTUtYmI0Yi00ZTA4LWQ0OTU5ZDUyMzYyYiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI3MS41Ni4yMTcuMTg3IiwiNzEuMzMuMjIyLjQ0Il0sInR5cGUiOiJjbGllbnQifV19.4AQR_gJFAMXY5cOrlEULmb87q0wEbcZ2sYsfku25W2gGOh8hscH3B9cCQownIPkXZBvcNDyObVGPPhljIpoksw',
+                "Authorization": `Bearer ${process.env.API_KEY}`,
             }
         })
 
@@ -122,7 +122,7 @@ app.get('/home', async (req, res) => {
                 dataType:'json',
                 headers: {
                     // Bearer apikey
-                    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImM2MTZiY2MwLWE4NWItNDYwMC04YWZjLTZmNTFjZGZjNGIzYSIsImlhdCI6MTY2Nzc2MTcwNCwic3ViIjoiZGV2ZWxvcGVyLzE1YzYxMjhiLTc5NTUtYmI0Yi00ZTA4LWQ0OTU5ZDUyMzYyYiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI3MS41Ni4yMTcuMTg3IiwiNzEuMzMuMjIyLjQ0Il0sInR5cGUiOiJjbGllbnQifV19.4AQR_gJFAMXY5cOrlEULmb87q0wEbcZ2sYsfku25W2gGOh8hscH3B9cCQownIPkXZBvcNDyObVGPPhljIpoksw',
+                    "Authorization": `Bearer ${process.env.API_KEY}`,
                     // `Bearer ${req.session.user.api_key} does not work
                 }
             })
@@ -137,7 +137,7 @@ app.get('/home', async (req, res) => {
                 method: 'get',
                 dataType:'json',
                 headers: {
-                    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImM2MTZiY2MwLWE4NWItNDYwMC04YWZjLTZmNTFjZGZjNGIzYSIsImlhdCI6MTY2Nzc2MTcwNCwic3ViIjoiZGV2ZWxvcGVyLzE1YzYxMjhiLTc5NTUtYmI0Yi00ZTA4LWQ0OTU5ZDUyMzYyYiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI3MS41Ni4yMTcuMTg3IiwiNzEuMzMuMjIyLjQ0Il0sInR5cGUiOiJjbGllbnQifV19.4AQR_gJFAMXY5cOrlEULmb87q0wEbcZ2sYsfku25W2gGOh8hscH3B9cCQownIPkXZBvcNDyObVGPPhljIpoksw',
+                    "Authorization": `Bearer ${process.env.API_KEY}`,
                 }
             })
     
@@ -148,7 +148,7 @@ app.get('/home', async (req, res) => {
             method: 'get',
             dataType:'json',
             headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImM2MTZiY2MwLWE4NWItNDYwMC04YWZjLTZmNTFjZGZjNGIzYSIsImlhdCI6MTY2Nzc2MTcwNCwic3ViIjoiZGV2ZWxvcGVyLzE1YzYxMjhiLTc5NTUtYmI0Yi00ZTA4LWQ0OTU5ZDUyMzYyYiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI3MS41Ni4yMTcuMTg3IiwiNzEuMzMuMjIyLjQ0Il0sInR5cGUiOiJjbGllbnQifV19.4AQR_gJFAMXY5cOrlEULmb87q0wEbcZ2sYsfku25W2gGOh8hscH3B9cCQownIPkXZBvcNDyObVGPPhljIpoksw',
+                "Authorization": `Bearer ${process.env.API_KEY}`,
             }
         })
         .then(results => {
