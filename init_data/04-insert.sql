@@ -22,7 +22,7 @@
 
 -- TODO DANIEL: Card Attributes:
 
--- Spell 
+-- Spell
 -- Ranged
 -- Melee
 -- Cheap
