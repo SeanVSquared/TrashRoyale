@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 
-// Use pg-promise to make connections to the database as previously
+// Use pg-promise to make connections to the base as previously
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 
@@ -70,6 +70,32 @@ app.get('/random', (req, res) => {
   // Render the RANDOM CHALLENGE page
   console.log("attempting to render page random");
   res.render('pages/random');
+});
+
+// Get Request to update and test card database (Eventually turn into a better form to update card data dynamically)
+app.get('/cards', (req, res) => {
+  // Render the Cards Test page
+  console.log("attempting to render /cards");
+
+  // Query to list cards
+  const query = 'SELECT * FROM CARDS';
+
+  db.any(query)
+    .then(cards => {
+      console.log(cards);
+      res.render('pages/cards', {
+        cards
+      });
+    })
+    .catch(error => {
+      res.render('pages/cards', {
+        error: true,
+        message: error.message,
+      });
+    });
+
+    
+
 });
 
 // GET Request for /home
