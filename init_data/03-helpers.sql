@@ -41,8 +41,6 @@ TODO: QOL Helper Procedures (Low Priority): (Hard code first and then transform 
   - TODO: card add function to update manual data from JSON
   - TODO: card add and merge function with API data and manual data
 
-  _card_name VARCHAR(60)
-
 */
 
 CREATE OR REPLACE FUNCTION get_num_cards()
