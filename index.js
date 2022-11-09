@@ -74,10 +74,11 @@ app.get('/random', (req, res) => {
   res.render('pages/random');
 });
 
-// Get Request to update and test card database (Eventually turn into a better form to update card data dynamically)
+// Get Request to update and test card database
+// TODO: turn into a better form to update card data dynamically
+// TODO: add functionality to dynamically add attributes to cards through UI
 app.get('/cards', (req, res) => {
-  // Render the Cards Test page
-  console.log("attempting to render /cards");
+  console.log("GET/cards");
 
   // Query to list cards
   const query = 'SELECT * FROM CARDS';
@@ -86,7 +87,8 @@ app.get('/cards', (req, res) => {
     .then(cards => {
       console.log(cards);
       res.render('pages/cards', {
-        cards
+        cards,
+        title: "Cards",
       });
     })
     .catch(error => {
@@ -95,9 +97,15 @@ app.get('/cards', (req, res) => {
         message: error.message,
       });
     });
+});
 
-    
+// Get Request to view and test attribute database 
+app.get('/attributes', (req, res) => {
+  console.log("GET/attributes");
+  
+  // TODO: Query to get attributes
 
+  res.render('pages/attributes');
 });
 
 // GET Request for /home
