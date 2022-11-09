@@ -181,7 +181,8 @@ app.get('/cards', (req, res) => {
     .then(cards => {
       console.log(cards);
       res.render('pages/cards', {
-        cards
+        cards,
+        title: "Cards",
       });
     })
     .catch(error => {
