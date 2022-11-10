@@ -55,11 +55,10 @@ app.use(
 // Specify that we are using json to parse the body of a request
 app.use(bodyParser.json());
 
-//
+// Serve static files from /resourcess
 app.use(express.static(__dirname + '/resources'));
 
-
-//
+// Middleware that parses urls
 app.use(
     bodyParser.urlencoded({
         extended: true,
@@ -130,40 +129,6 @@ app.get('/random', (req, res) => {
   res.render('pages/random');
 });
 
-// Get Request to update and test card database
-// TODO: turn into a better form to update card data dynamically
-// TODO: add functionality to dynamically add attributes to cards through UI
-app.get('/cards', (req, res) => {
-  console.log("GET/cards");
-
-  // Query to list cards
-  const query = 'SELECT * FROM CARDS';
-
-  db.any(query)
-    .then(cards => {
-      console.log(cards);
-      res.render('pages/cards', {
-        cards,
-        title: "Cards",
-      });
-    })
-    .catch(error => {
-      res.render('pages/cards', {
-        error: true,
-        message: error.message,
-      });
-    });
-});
-
-// Get Request to view and test attribute database 
-app.get('/attributes', (req, res) => {
-  console.log("GET/attributes");
-  
-  // TODO: Query to get attributes
-
-  res.render('pages/attributes');
-});
-
 // GET Request for /home
 app.get('/home', async (req, res) => {
     //console.log(req.session.user.api_key);
@@ -232,6 +197,40 @@ app.get('/home', async (req, res) => {
             })
         })
 
+});
+
+// Get Request to update and test card database
+// TODO: turn into a better form to update card data dynamically
+// TODO: add functionality to dynamically add attributes to cards through UI
+app.get('/cards', (req, res) => {
+  console.log("GET/cards");
+
+  // Query to list cards
+  const query = 'SELECT * FROM CARDS';
+
+  db.any(query)
+      .then(cards => {
+          console.log(cards);
+          res.render('pages/cards', {
+              cards,
+              title: 'Cards',
+          });
+      })
+      .catch(error => {
+          res.render('pages/cards', {
+              error: true,
+              message: error.message,
+          });
+      });
+});
+
+// Get Request to view and test attribute database 
+app.get('/attributes', (req, res) => {
+  console.log("GET/attributes");
+
+  // TODO: Query to get attributes
+
+  res.render('pages/attributes');
 });
 
 app.listen(3000);

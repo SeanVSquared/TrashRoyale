@@ -8,7 +8,7 @@
 
     <!-- Dynamic Title with EJS: --> 
     <!-- Add a title property in render response to display a custom title -->
-    <title><%-(locals.title)?locals.title:"Trash Royale"%></title>
+    <title><%-(locals.title)?"Trash Royale • " + locals.title:"Trash Royale"%></title>
 
     <!-- Simple favicon with the clash royale shield emblem -->
     <link rel="icon" type="image/x-icon" href="/imgs/shield_emblem_favicon.ico">
