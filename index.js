@@ -137,19 +137,36 @@ app.get('/random', (req, res) => {
     // Query the database with this request in task form for multiple queries
     db.task(task => {
       // Query the database for the challenge ID
-      return task.one(randomQuery)
+      return task.any(randomQuery)
       .then(data => {
         // We now have the data output, so we need to handle a few cases
         let challenge = data[0];
         // CASE 1: The data is null. This means that a challenge with this ID does not exist
         if(!challenge) {
           // Render the new random page with a message stating that the challenge could not be found
-          console.log("Could not find a challenge of ID: " + challengeID);
+          // console.log("Could not find a challenge of ID: " + challengeID);
           // Deliver a message to the page
           res.render('pages/newrandom', {
             error: true,
-            message: "Incorrect username or password."
+            message: "A challenge of this ID does not exist."
           })
+        }
+        else {
+          // Else, we should now attempt to render this challenge
+          console.log(challenge);
+
+          // Call the database with each card's ID to get their images
+          const queryImage = `SELECT icon_url FROM cards WHERE card_id = $1`
+
+          // Query for Card 1
+          return task.any(queryImage, challenge.card_id_1)
+          .then(data => {
+            // Extract the image
+          })
+
+          res.render('pages/random', {
+
+          });
           
         }
         
@@ -160,12 +177,10 @@ app.get('/random', (req, res) => {
   }
   else {
     // If a chaallenge ID was not provided, or was given as null, render the page to create a new random challenge
-    console.log("attempting to render page newrandom");
+    //console.log("attempting to render page newrandom");
     res.render('pages/newrandom');
   }
 
-  console.log("attempting to render page random");
-  res.render('pages/random');
 });
 
 // Get Request to update and test card database
