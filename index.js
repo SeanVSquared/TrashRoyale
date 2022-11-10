@@ -71,6 +71,7 @@ app.get('/login', (req, res) => {
 
 app.post('/login', async (req, res) => {
   //the logic goes here
+  console.log("hi")
   const username = req.body.username;
   const query = `SELECT * FROM users WHERE username = $1;`;
   db.any(query, [
@@ -78,11 +79,8 @@ app.post('/login', async (req, res) => {
   ]).then(async function(user) {
       const match = await bcrypt.compare(req.body.password, user[0].password);
       if(match){
-          // req.session.user = {
-          //     api_key: process.env.API_KEY,
-          // };
           req.session.save();
-          res.redirect('/random')
+          res.redirect('/home')
       }
       else{
           res.render('pages/register', {
