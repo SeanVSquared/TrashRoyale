@@ -43,6 +43,8 @@ db.connect()
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
 
+
+
 // Initializing Session variables
 app.use(
   session({
@@ -55,9 +57,9 @@ app.use(
 // Specify that we are using json to parse the body of a request
 app.use(bodyParser.json());
 
-//
-app.use(express.static(__dirname + '/resources'));
-
+// Necessary code to serve static files such as images
+app.use(express.static('resources'));
+app.use('/images', express.static('resources/imgs'));
 
 //
 app.use(

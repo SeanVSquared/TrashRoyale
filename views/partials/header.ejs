@@ -8,7 +8,7 @@
 
     <!-- Dynamic Title with EJS: --> 
     <!-- Add a title property in render response to display a custom title -->
-    <title><%-(locals.title)?locals.title:"Trash Royale"%></title>
+    <title><%-(locals.title)?locals.title:"Trash Royale!!"%></title>
 
     <!-- Simple favicon with the clash royale shield emblem -->
     <link rel="icon" type="image/x-icon" href="/imgs/shield_emblem_favicon.ico">
@@ -20,4 +20,12 @@
     <link href="/resources/css/home.css" rel="stylesheet" type="text/css">
 
 </head>
-<body>
+
+<% var bgArray = ['arena1.png', 'arena2.png', 'arena3.png', 'arena4.png'];
+    var bg = bgArray[Math.floor(Math.random() * bgArray.length)];
+    //Create base path of where images are stored
+    var path = '/images/';
+    var imageUrl = path + bg; 
+%>
+
+<body style="background-image: url('<%= imageUrl %>');background-size: cover;background-repeat: no-repeat">
