@@ -66,6 +66,62 @@ app.use(
     })
 );
 
+app.get('/login', (req, res) => {
+  res.render('pages/login');
+});
+
+app.post('/login', async (req, res) => {
+  //the logic goes here
+  console.log("hi")
+  const username = req.body.username;
+  const query = `SELECT * FROM users WHERE username = $1;`;
+  db.any(query, [
+      username,
+  ]).then(async function(user) {
+      const match = await bcrypt.compare(req.body.password, user[0].password);
+      if(match){
+          req.session.save();
+          res.redirect('/home')
+      }
+      else{
+          res.render('pages/register', {
+              message: `incorrect username or password`,
+          });
+      }
+  })
+  .catch(err => {
+      console.log(err);
+      res.redirect('/register');
+  })
+});
+
+app.get('/register', (req, res) => {
+  res.render('pages/register');
+});
+
+// Register submission
+app.post('/register', async (req, res) => {
+  //the logic goes here
+  console.log(req.body)
+  const username = req.body.username;
+  const email = req.body.email
+  const hash = await bcrypt.hash(req.body.password, 10);
+  console.log(hash)
+  const query = `INSERT INTO users (username, email, password)
+  values ($1, $2, $3);`
+  
+  db.any(query, [
+      username, email,
+      hash
+  ]).then(function (data) {
+      res.redirect('/login');
+  })
+  .catch(err => {
+      console.log(err);
+      res.redirect('/register');
+  })
+});
+
 // GET request to /random (for testing's sake)
 app.get('/random', (req, res) => {
   // Render the RANDOM CHALLENGE page
