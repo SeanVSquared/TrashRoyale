@@ -70,6 +70,44 @@ app.use(
 app.get('/random', (req, res) => {
   // Render the RANDOM CHALLENGE page
   // Parse the request headers to see if the user is attempting to render a pre-existing challenge
+  const challengeID = Number(req.query.randomid);
+
+  // Check to see if an id was queried. If not, render the page for just a button
+  if (challengeID && challengeID != null) {
+    // If a query was given, we need to now check the database for this challenge
+    // Create a query for the database
+    const randomQuery = `SELECT * FROM randchallenges WHERE challenge_id = '${challengeID}'`;
+    
+    // Query the database with this request in task form for multiple queries
+    db.task(task => {
+      // Query the database for the challenge ID
+      return task.one(randomQuery)
+      .then(data => {
+        // We now have the data output, so we need to handle a few cases
+        let challenge = data[0];
+        // CASE 1: The data is null. This means that a challenge with this ID does not exist
+        if(!challenge) {
+          // Render the new random page with a message stating that the challenge could not be found
+          console.log("Could not find a challenge of ID: " + challengeID);
+          // Deliver a message to the page
+          res.render('pages/newrandom', {
+            error: true,
+            message: "Incorrect username or password."
+          })
+          
+        }
+        
+
+      })
+    })
+
+  }
+  else {
+    // If a chaallenge ID was not provided, or was given as null, render the page to create a new random challenge
+    console.log("attempting to render page newrandom");
+    res.render('pages/newrandom');
+  }
+
   console.log("attempting to render page random");
   res.render('pages/random');
 });
