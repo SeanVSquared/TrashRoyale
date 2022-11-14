@@ -4,9 +4,177 @@
 
 <main>
   <div class="container-fluid">
+
+    <!-- add a refresh buttton that will hook up with the api -->
+    <!-- update the github todo list to make sure everything is up to date -->
+
+    <!-- this is a bar that has the refresh and info like how many challenges the user completed -->
+    <div class="container">
+      <div class="row" class="d-flex justify-content-center">
+          <!-- refresh button -->
+          <div class="col s12 m7"><a>
+              <input type="hidden"
+                  name="refresh"
+                  value="true">
+              </input>
+              <button type="submit" class="btn btn-primary">New Deck</button>
+              <!-- <h5 style="color: white;">New Deck</h5> -->
+          </a></div>
+          <!--  How many challenges ther user completes-->
+          <div class="col s12 m7">
+              <h5 style="color: white;">Challenges Completed: <%= daily_challenges_completed %></h5>
+          </div>
+      </div>
+    </div>
+
+    <!-- display the card information using referances to result such as result[0].info -->
     
+    <!-- Container for the Deck cards -->
+    <div class="container">
+      <!-- 2 rows and 4 columns -->
+      <div class="row" class="d-flex justify-content-center">
+        <!-- here we have card types that will display our 'card' info -->
+        
+        <!-- start of row 1 -->
+        <div class="row justify-content-center"> 
+          <!-- card 0 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[0].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[0].cost%></h7>
+                  <p class="card-text"><%=result[0].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[0].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card 1 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[1].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[1].cost%></h7>
+                  <p class="card-text"><%=result[1].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[1].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card 2 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[2].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[2].cost%></h7>
+                  <p class="card-text"><%=result[2].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[2].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card 3 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[3].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[3].cost%></h7>
+                  <p class="card-text"><%=result[3].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[3].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- start of row 2 -->
+        <div class="row justify-content-center"> 
+          <!-- card 4 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[4].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[4].cost%></h7>
+                  <p class="card-text"><%=result[4].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[4].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card 5 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[5].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[5].cost%></h7>
+                  <p class="card-text"><%=result[5].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[5].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card 6 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[6].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[6].cost%></h7>
+                  <p class="card-text"><%=result[6].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[6].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card 7 -->
+          <div class="row">
+            <div class="col s12 m7">
+              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
+                <div class="card-image">
+                  <img src=<%=result[7].card_image%> >      
+                </div>
+                <div class="card-action">
+                  <h7 class="card-title" >Elixer: <%=result[7].cost%></h7>
+                  <p class="card-text"><%=result[7].card_name%></p>
+                  <p class="card-text">Max Level: <%=result[7].max_level%></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         
+      </div>
+    </div>
   </div>
 </main>
 
 <!-- Include footer partials -->
 <%- include ('../partials/footer') %>
+
+
+
+
+ VARCHAR(60) UNIQUE NOT NULL,
+ SMALLINT,
+cost SMALLINT,
