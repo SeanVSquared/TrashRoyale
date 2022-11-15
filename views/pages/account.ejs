@@ -2,6 +2,7 @@
 <%- include ('../partials/menu') %>
 
 <main>
+
     <!-- this creates a card with a table with all of the user information -->
     <div class="container" style="padding-top: 40px;">
         <div class="row justify-content-center">
@@ -11,35 +12,35 @@
                         <table class="highlight">
                             <tr>
                                 <th>USERID:</th>
-                                <td>12678</td>
+                                <td><%= user_id %></td>
                             </tr>
                             <tr>
                                 <th>Email:</th>
-                                <td>nijo4798@colorado.edu</td>
+                                <td><%= email %></td>
                             </tr>
                             <tr>
                                 <th>USERNAME:</th>
-                                <td>NikoJ</td>
+                                <td><%= username %></td>
                             </tr>
                             <tr>
                                 <th>ClashTag:</th>
-                                <td>XAST7J33</td>
+                                <td><%= clash_tag %></td>
                             </tr>
                             <tr>
                                 <th>Current Streak:</th>
-                                <td>5</td>
+                                <td><%= current_streak %></td>
                             </tr>
                             <tr>
                                 <th>Max Streak:</th>
-                                <td>10</td>
+                                <td><%= max_streak %></td>
                             </tr>
                             <tr>
                                 <th>Daily Challenges Completed:</th>
-                                <td>3</td>
+                                <td><%= daily_challenges_completed %></td>
                             </tr>
                             <tr>
                                 <th>Random Challenges Completed:</th>
-                            <td>2</td>
+                                <td><%= random_challenges_completed %></td>
                             </tr>
                         </table>
                     </div>
@@ -52,5 +53,4 @@
 
     <!-- git checkout main -->
     <!-- git pull -->
-
 
