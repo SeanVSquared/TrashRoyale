@@ -3,40 +3,42 @@
 
 <main>
     <div class="container-fluid">
-        <%- include ('../partials/message') %>
-        <% let player = results %>
-        <% let worstClan_members = worstClanInfo.data.memberList; %>
-        <% let profileImg = player.data.currentFavouriteCard.iconUrls.medium %>
-        <% let profilePic = `<div class="profile-image">
+        <% if(typeof results === 'undefined') {  %>
+            <%- include ('../partials/message') %>
+        <% } else { %> 
+
+            <% let player = results %>
+        <%    let worstClan_members = worstClanInfo.data.memberList; %>
+        <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
+        <%  let profilePic = `<div class="profile-image"> 
 
             <img src="${profileImg}" alt="">
 
-        </div>`  %>
-        <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+        </div>`; %>
+
         <div class="profileCard container-fluid">
-                <div class="profile-card-6"><img src="https://i.imgur.com/m72NFZ7.png" class="img img-responsive">
-                    <div class="profile-name"><%= player.data.name %>
-                        <br><small><%= player.data.tag %></small>
-                        <br><small><%= player.data.arena.name %></small>
-                    </div>
-                    <div>
-                        <%- profilePic %>
-                    </div>
-                    <div class="profile-overview">
-                        <div class="profile-overview text-center">
-                            <div class="row text-center">
-                                <div class="col-sm-4">
-                                    <h3><%= player.data.wins %></h3>
-                                    <p>Wins</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h3><%= player.data.losses %></h3>
-                                    <p>Losses</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h3><%= player.data.trophies %></h3>
-                                    <p>Trophies</p>
-                                </div>
+            <div class="profile-card-6"><img src="https://i.imgur.com/m72NFZ7.png" class="img img-responsive">
+                <div class="profile-name"><%= player.data.name %>
+                    <br><small><%= player.data.tag %></small>
+                    <br><small><%= player.data.arena.name %></small>
+                </div>
+                <div>
+                    <%- profilePic %>
+                </div>
+                <div class="profile-overview">
+                    <div class="profile-overview text-center">
+                        <div class="row text-center">
+                            <div class="col-sm-4">
+                                <h3><%= player.data.wins %></h3>
+                                <p>Wins</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <h3><%= player.data.losses %></h3>
+                                <p>Losses</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <h3><%= player.data.trophies %></h3>
+                                <p>Trophies</p>
                             </div>
                         </div>
                     </div>
@@ -47,10 +49,14 @@
         <div class="friendCard" style="background:rgba(0,0,255,.5)">
             <section class="card mb-3 sticky-top-md">
                 <div class="card-body">
-                Friends
+                Most Recent Battlelog
                 </div>
             </section>
         </div>
+    </div>
+
+        <% } %>
+        <!-- THE REST OF YOUR HTML CODE GOES HERE -->
 
     </div>
 </main>
