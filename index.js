@@ -96,6 +96,7 @@ app.post('/login', async (req, res) => {
       console.log(err);
       res.redirect('/register');
   })
+
 });
 
 app.get('/register', (req, res) => {
@@ -126,6 +127,7 @@ app.post('/register', async (req, res) => {
       console.log(err);
       res.redirect('/register');
   })
+
 });
 
 // GET request to /random (for testing's sake)
