@@ -74,7 +74,7 @@ app.get('/login', (req, res) => {
 
 app.post('/login', async (req, res) => {
   //the logic goes here
-  console.log("hi")
+  console.log(req.body)
   const username = req.body.username;
   const query = `SELECT * FROM users WHERE username = $1;`;
   db.any(query, [
@@ -107,13 +107,15 @@ app.post('/register', async (req, res) => {
   console.log(req.body)
   const username = req.body.username;
   const email = req.body.email
+  const clash_tag = req.body.clashTag
+  console.log(clash_tag)
   const hash = await bcrypt.hash(req.body.password, 10);
   console.log(hash)
-  const query = `INSERT INTO users (username, email, password)
-  values ($1, $2, $3);`
+  const query = `INSERT INTO users (username, email, clash_tag, password)
+  values ($1, $2, $3, $4);`
   
   db.any(query, [
-      username, email,
+      username, email, clash_tag,
       hash
   ]).then(function (data) {
       res.redirect('/login');
