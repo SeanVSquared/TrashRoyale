@@ -1,0 +1,51 @@
+
+Went through and got updated progress with everybody:
+
+Sean:
+Done with database schema we need
+Currently working on random card challenge page
+Have Tables: User, RandomChallengeTable, LinkUserAndRandomChallengeTable
+
+Tips: Make sure to think through thoroughly and see how everything will work (Lots of corner cases)
+
+Daniel:
+Card database schema
+Haven’t connected to api yet
+Worked on adding our own static information (sorting cards by how we wan’t)
+
+For next week going to be working on displaying information from the database
+
+Tobey:
+Front end 
+Created logo and simple background changing script on refresh
+
+For upcoming weeks:
+Work on styling other various pages
+Also begin picking up other work by asking people what pages they need help with
+Maybe begin working on bad deck page
+
+Derek:
+Has been working on home page and displaying information with api calls
+Also been working on a specific problem (making sure the api key ins’t public)
+
+Important details to note:
+Have to make the cards modular (NO HARD CODING)
+Make sure the data is actually displayed from the partials
+Have a meeting about homepage and what we want it to look likeNiko:
+Been working on account page
+Currently everything is hard coded
+
+Tips:
+Don’t focus too much on account page put more work into other important places
+
+Nic:
+Been working on login and register page
+Storing users in database created by Sean
+
+Tips:
+No pushing to main
+
+
+
+
+
