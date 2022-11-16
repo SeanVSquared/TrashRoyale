@@ -191,7 +191,10 @@ app.use(auth);
 app.get('/home', async (req, res) => {
     //console.log(req.session.user.api_key);
     //console.log(req.session.user.tag);
-    const tag = '%13LJV98808';
+    const clashTag = '#LJV98808';
+    const tag = clashTag.replace('#', '%23');
+
+
     const battlelog = await axios({
         
         url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,

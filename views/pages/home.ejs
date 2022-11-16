@@ -7,7 +7,9 @@
             <%- include ('../partials/message') %>
         <% } else { %> 
 
-        <% let player = results %>
+        <% let player = results; %>
+        <% let recentMatches = battlelog.data;
+           console.log(recentMatches); %>
         <%    let worstClan_members = worstClanInfo.data.memberList; %>
         <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
         <%  let profilePic = `<div class="profile-image"> 
@@ -45,16 +47,96 @@
             </div>
         </div>
         <div class="container-fluid">
-            <div class="battlelog" style="background:rgba(0,0,255,.5)">
+            <div class="battlelog" style="background: rgba(68, 68, 68, 0.28); ">
                 <section class="card mb-3 sticky-top-md">
                     <div class="card-body">
-                        <h5 class="card-title">Most Recent Battle</h5>
+                        <h4 class="card-title">Most Recent Battles</h4>
                     </div>
                 </section>
+                <% recentMatches.forEach(function(match) { console.log(match); 
+                    let carouselButtonIDCnt = 0;
+                    carouselButtonIDCnt++;
+                    let matchDeck = match.team[0].cards;
+                    var len = matchDeck.length;
+                    let winCountBefore = match.challengeWinCountBefore;
+                    let win = false;
+                    if(match.team[0].crowns == match.opponent[0].crowns) {
+                        win = false;
+                    } else if (match.team[0].crowns > match.opponent[0].crowns) {
+                        win = true;
+                    } else {
+                        win = false;
+                    }
+                    console.log(winCountBefore); %>
+                    
+                <section class="card mb-3 sticky-md">
+                    <div class="card-body">
+                        <h4 style="display: inline-block;"><%= match.type %> </h4>
+                        <% if(win == true) { %>
+                            <p style="color: green; position: relative; display: inline-block; padding-left: 1em;">Win</p>
+                        <% } else { %>
+                            <p style="color: red; position: relative; display: inline-block; padding-left: 1em;">Loss</p>
+                        <% } %>
+                        <h5 style="margin-top: 1em;">&ensp;Deck</h5>
+                        <div  style="padding: 0.5em 0.5em 0.5em 0.5em; background:rgba(68, 68, 68, 0.05); border-radius: 30px; width: 100%;" id="carouselControls" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <% let count = 0; %>
+                                    <div  class="container">
+                                <% for(var i = 0; i < len; i = i + 4) {%>
+                                    <% count++; %>
+                                    <%  let cardImg1 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i].iconUrls.medium}">`;
+                                    let cardImg2 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i + 1].iconUrls.medium}">`;
+                                    let cardImg3 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i + 2].iconUrls.medium}">`;
+                                    let cardImg4 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i + 3].iconUrls.medium}">`; %>
+                                            <% if(count == 1){ %>
+                                                <div  class="carousel-item active">
+                                            <% } else { %> 
+                                                <div class="carousel-item">
+                                            <% } %>
+                                                <div class="row">
+                                                    <div style="margin-left: 1em;" class="col-sm">
+
+                                                        <%- cardImg1 %>
+
+                                                    </div>
+                                                    <div style="margin-left: 1em;" class="col-sm">
+                                                        
+                                                        <%- cardImg2 %>
+                                        
+                                                    </div>
+                                                    <div style="margin-left: 1em;" class="col-sm">
+
+                                                        <%- cardImg3 %>
+                                                    
+                                                    </div>
+                                                    <div style="margin-left: 1em;" class="col-sm">
+                                                
+                                                        <%- cardImg4 %>
+                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                <% } %>  
+                        </div>
+                    </div>
+                            <!-- <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a> -->
+                        </div>
+                    </div>
+                </section>
+                <% }); %>
             </div>
         </div>
     </div>
-        <% } %>
+
+
+    <% }; %>
 </main>
 
 <%- include ('../partials/footer') %>
