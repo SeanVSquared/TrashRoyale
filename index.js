@@ -83,6 +83,7 @@ app.post('/login', async (req, res) => {
   ]).then(async function(user) {
       const match = await bcrypt.compare(req.body.password, user[0].password);
       if(match){
+        console.log("MATCH!");
           req.session.save();
           res.redirect('/home')
       }
