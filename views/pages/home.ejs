@@ -7,7 +7,7 @@
             <%- include ('../partials/message') %>
         <% } else { %> 
 
-            <% let player = results %>
+        <% let player = results %>
         <%    let worstClan_members = worstClanInfo.data.memberList; %>
         <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
         <%  let profilePic = `<div class="profile-image"> 
@@ -15,7 +15,6 @@
             <img src="${profileImg}" alt="">
 
         </div>`; %>
-
         <div class="profileCard container-fluid">
             <div class="profile-card-6"><img src="https://i.imgur.com/m72NFZ7.png" class="img img-responsive">
                 <div class="profile-name"><%= player.data.name %>
@@ -45,20 +44,17 @@
                 </div>
             </div>
         </div>
-
-        <div class="friendCard" style="background:rgba(0,0,255,.5)">
-            <section class="card mb-3 sticky-top-md">
-                <div class="card-body">
-                Most Recent Battle
-                </div>
-            </section>
+        <div class="container-fluid">
+            <div class="battlelog" style="background:rgba(0,0,255,.5)">
+                <section class="card mb-3 sticky-top-md">
+                    <div class="card-body">
+                        <h5 class="card-title">Most Recent Battle</h5>
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
-
         <% } %>
-        <!-- THE REST OF YOUR HTML CODE GOES HERE -->
-
-    </div>
 </main>
 
 <%- include ('../partials/footer') %>

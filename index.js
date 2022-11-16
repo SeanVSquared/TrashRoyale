@@ -83,7 +83,9 @@ app.post('/login', async (req, res) => {
   ]).then(async function(user) {
       const match = await bcrypt.compare(req.body.password, user[0].password);
       if(match){
-        console.log("MATCH!");
+        req.session.user = {
+            username: username,
+        }
           req.session.save();
           res.redirect('/home')
       }
@@ -185,12 +187,11 @@ const auth = (req, res, next) => {
   // Authentication Required
 app.use(auth);
 
-
 // GET Request for /home
 app.get('/home', async (req, res) => {
     //console.log(req.session.user.api_key);
     //console.log(req.session.user.tag);
-    const tag = '%23LJV98808';
+    const tag = '%13LJV98808';
     const battlelog = await axios({
         
         url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,
@@ -204,6 +205,7 @@ app.get('/home', async (req, res) => {
             console.log(error);
             res.render('pages/home', {
                 message: 'Not able to find player with your clash royale tag. Please check your tag and change it if needed in account page', 
+                username: req.session.user.username,
             })
         })
 
@@ -275,6 +277,11 @@ app.get('/home', async (req, res) => {
             })
         })
 
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
 });
 
 app.listen(3000);
