@@ -69,10 +69,11 @@ app.use(
 );
 
 app.get('/login', (req, res) => {
-  res.render('pages/login');
+    res.render('pages/login');
 });
 
 app.post('/login', async (req, res) => {
+
   //the logic goes here
   console.log(req.body)
   const username = req.body.username;
@@ -82,6 +83,9 @@ app.post('/login', async (req, res) => {
   ]).then(async function(user) {
       const match = await bcrypt.compare(req.body.password, user[0].password);
       if(match){
+        req.session.user = {
+            username: username,
+        }
           req.session.save();
           res.redirect('/home')
       }
@@ -95,11 +99,13 @@ app.post('/login', async (req, res) => {
       console.log(err);
       res.redirect('/register');
   })
+
 });
 
 app.get('/register', (req, res) => {
-  res.render('pages/register');
+    res.render('pages/register');
 });
+
 
 // Register submission
 app.post('/register', async (req, res) => {
@@ -124,55 +130,71 @@ app.post('/register', async (req, res) => {
       console.log(err);
       res.redirect('/register');
   })
+
 });
 
 // GET request to /random (for testing's sake)
 app.get('/random', (req, res) => {
   // Render the RANDOM CHALLENGE page
   // Parse the request headers to see if the user is attempting to render a pre-existing challenge
-  console.log("attempting to render page random");
-  res.render('pages/random');
+    console.log("attempting to render page random");
+    res.render('pages/random');
 });
 
 // Get Request to update and test card database
 // TODO: turn into a better form to update card data dynamically
 // TODO: add functionality to dynamically add attributes to cards through UI
 app.get('/cards', (req, res) => {
-  console.log("GET/cards");
+    console.log("GET/cards");
 
-  // Query to list cards
-  const query = 'SELECT * FROM CARDS';
+    // Query to list cards
+    const query = 'SELECT * FROM CARDS';
 
-  db.any(query)
-    .then(cards => {
-      console.log(cards);
-      res.render('pages/cards', {
-        cards,
-        title: "Cards",
-      });
-    })
-    .catch(error => {
-      res.render('pages/cards', {
-        error: true,
-        message: error.message,
-      });
-    });
+    db.any(query)
+        .then(cards => {
+        console.log(cards);
+        res.render('pages/cards', {
+            cards,
+            title: "Cards",
+        });
+        })
+        .catch(error => {
+        res.render('pages/cards', {
+            error: true,
+            message: error.message,
+        });
+        });
 });
 
 // Get Request to view and test attribute database 
 app.get('/attributes', (req, res) => {
-  console.log("GET/attributes");
-  
-  // TODO: Query to get attributes
+    console.log("GET/attributes");
+    
+    // TODO: Query to get attributes
 
-  res.render('pages/attributes');
+    res.render('pages/attributes');
 });
+
+//Authentication Middleware
+const auth = (req, res, next) => {
+    if (!req.session.user) {
+      // Default to register page.
+        return res.redirect('/register');
+    }
+    next();
+};
+
+  // Authentication Required
+app.use(auth);
 
 // GET Request for /home
 app.get('/home', async (req, res) => {
     //console.log(req.session.user.api_key);
     //console.log(req.session.user.tag);
-    const tag = '%23LJV98808';
+    const clashTag = '#LJV98808';
+    const tag = clashTag.replace('#', '%23');
+
+
     const battlelog = await axios({
         
         url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,
@@ -181,6 +203,13 @@ app.get('/home', async (req, res) => {
             headers: {
                 "Authorization": `Bearer ${process.env.API_KEY}`,
             }
+        })
+        .catch(error => { //If there is an error here it most likely will be with the tag registered in the users account so it sends the appropriate message
+            console.log(error);
+            res.render('pages/home', {
+                message: 'Not able to find player with your clash royale tag. Please check your tag and change it if needed in account page', 
+                username: req.session.user.username,
+            })
         })
 
         const clanRankings = await axios({
@@ -194,12 +223,18 @@ app.get('/home', async (req, res) => {
                     // `Bearer ${req.session.user.api_key} does not work
                 }
             })
+            .catch(error => {
+                console.log(error);
+                res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
+                    message: 'Error with retrieving clan rankings', 
+                })
+            })
 
         
             var worstClan = clanRankings.data.items[998];
             var worstClanTag = worstClan.tag.replace('#', '%23');
         
-        const worstClanInfo = await axios({
+            const worstClanInfo = await axios({
         
             url: `https://api.clashroyale.com/v1/clans/${worstClanTag}`,
                 method: 'get',
@@ -207,6 +242,12 @@ app.get('/home', async (req, res) => {
                 headers: {
                     "Authorization": `Bearer ${process.env.API_KEY}`,
                 }
+            })
+            .catch(error => {
+                console.log(error);
+                res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
+                    message: 'Error retrieving clan rankings info', 
+                })
             })
     
     
@@ -217,6 +258,7 @@ app.get('/home', async (req, res) => {
             dataType:'json',
             headers: {
                 "Authorization": `Bearer ${process.env.API_KEY}`,
+                
             }
         })
         .then(results => {
@@ -226,16 +268,23 @@ app.get('/home', async (req, res) => {
                 battlelog: battlelog,
                 clanRankings: clanRankings,
                 worstClanInfo: worstClanInfo,
+                username: req.session.user.username
             });
         })
-        .catch(error => {
+        .catch(error => { //an error could occur if the incorrect clash royale tag is associated with the account so the eroor message reflects that
             // Handle errors
-            console.log(error);
-            res.render('pages/login', {
-                message: 'Uh Oh looks like your account was not found', 
+            //console.log(error);
+            res.render('pages/home', {
+                message: 'Uh Oh looks like something went wrong with your tag (please check your clash royale user tag and make changes if needed)',
+                username: req.session.user.username,
             })
         })
 
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
 });
 
 app.listen(3000);
