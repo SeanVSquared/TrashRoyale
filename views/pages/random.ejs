@@ -1,12 +1,10 @@
+
 <!-- Include header and menu partials -->
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
 <main>
   <div class="container-fluid">
-
-    <!-- add a refresh buttton that will hook up with the api -->
-    <!-- update the github todo list to make sure everything is up to date -->
 
     <!-- this is a bar that has the refresh and info like how many challenges the user completed -->
     <div class="container">
@@ -22,12 +20,12 @@
           </a></div>
           <!--  How many challenges ther user completes-->
           <div class="col s12 m7">
-              <h5 style="color: white;">Challenges Completed: <%= daily_challenges_completed %></h5>
+              <h5 style="color: white;">Challenges Completed: 4</h5>
           </div>
       </div>
     </div>
 
-    <!-- display the card information using referances to result such as result[0].info -->
+    <!-- display the card information using referances to data such as data[0].info -->
     
     <!-- Container for the Deck cards -->
     <div class="container">
@@ -39,132 +37,197 @@
         <div class="row justify-content-center"> 
           <!-- card 0 -->
           <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[0].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[0].cost%></h7>
-                  <p class="card-text"><%=result[0].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[0].max_level%></p>
+            <!-- Card/Button trigger modal -->
+            <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <img src="<%=data[0].icon_url%>" width="200px">
+            </button>
+            <!-- Modal for card -->
+            <div class="modal" id="exampleModal" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="card-title" ><%=data[0].card_name%></h5>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="card-text">Elixer: <%=data[0].cost%></p>
+                    <p class="card-text">Max Level: <%=data[0].max_level%></p>
+                    <img src="<%=data[0].icon_url%>" width="200px">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
           <!-- card 1 -->
           <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[1].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[1].cost%></h7>
-                  <p class="card-text"><%=result[1].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[1].max_level%></p>
+            <!-- Card/Button trigger modal -->
+            <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <img src="<%=data[1].icon_url%>" width="200px">
+            </button>
+            <!-- Modal for card -->
+            <div class="modal" id="exampleModal" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="card-title" ><%=data[1].card_name%></h5>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="card-text">Elixer: <%=data[1].cost%></p>
+                    <p class="card-text">Max Level: <%=data[1].max_level%></p>
+                    <img src="<%=data[1].icon_url%>" width="200px">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
           <!-- card 2 -->
           <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[2].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[2].cost%></h7>
-                  <p class="card-text"><%=result[2].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[2].max_level%></p>
+            <!-- Card/Button trigger modal -->
+            <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <img src="<%=data[2].icon_url%>" width="200px">
+            </button>
+            <!-- Modal for card -->
+            <div class="modal" id="exampleModal" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="card-title" ><%=data[2].card_name%></h5>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="card-text">Elixer: <%=data[2].cost%></p>
+                    <p class="card-text">Max Level: <%=data[2].max_level%></p>
+                    <img src="<%=data[2].icon_url%>" width="200px">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
           <!-- card 3 -->
           <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[3].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[3].cost%></h7>
-                  <p class="card-text"><%=result[3].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[3].max_level%></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- start of row 2 -->
-        <div class="row justify-content-center"> 
-          <!-- card 4 -->
-          <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[4].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[4].cost%></h7>
-                  <p class="card-text"><%=result[4].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[4].max_level%></p>
+            <!-- Card/Button trigger modal -->
+            <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <img src="<%=data[3].icon_url%>" width="200px">
+            </button>
+            <!-- Modal for card -->
+            <div class="modal" id="exampleModal" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="card-title" ><%=data[3].card_name%></h5>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="card-text">Elixer: <%=data[3].cost%></p>
+                    <p class="card-text">Max Level: <%=data[3].max_level%></p>
+                    <img src="<%=data[3].icon_url%>" width="200px">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- card 5 -->
-          <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[5].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[5].cost%></h7>
-                  <p class="card-text"><%=result[5].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[5].max_level%></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- card 6 -->
-          <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[6].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[6].cost%></h7>
-                  <p class="card-text"><%=result[6].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[6].max_level%></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- card 7 -->
-          <div class="row">
-            <div class="col s12 m7">
-              <div class="card bg-secondary text-white" style="max-width: 190px; min-width: 175px;">
-                <div class="card-image">
-                  <img src=<%=result[7].card_image%> >      
-                </div>
-                <div class="card-action">
-                  <h7 class="card-title" >Elixer: <%=result[7].cost%></h7>
-                  <p class="card-text"><%=result[7].card_name%></p>
-                  <p class="card-text">Max Level: <%=result[7].max_level%></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-         
+          </div> 
       </div>
+
+
+       <!-- start of row 2 -->
+       <div class="row justify-content-center"> 
+        <!-- card 4 -->
+        <div class="row">
+          <!-- Card/Button trigger modal -->
+          <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+            <img src="<%=data[4].icon_url%>" width="200px">
+          </button>
+          <!-- Modal for card -->
+          <div class="modal" id="exampleModal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="card-title" ><%=data[4].card_name%></h5>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-body">
+                  <p class="card-text">Elixer: <%=data[4].cost%></p>
+                    <p class="card-text">Max Level: <%=data[4].max_level%></p>
+                  <img src="<%=data[4].icon_url%>" width="200px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- card 5 -->
+        <div class="row">
+          <!-- Card/Button trigger modal -->
+          <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+            <img src="<%=data[5].icon_url%>" width="200px">
+          </button>
+          <!-- Modal for card -->
+          <div class="modal" id="exampleModal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="card-title" ><%=data[5].card_name%></h5>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-body">
+                  <p class="card-text">Elixer: <%=data[5].cost%></p>
+                    <p class="card-text">Max Level: <%=data[5].max_level%></p>
+                  <img src="<%=data[5].icon_url%>" width="200px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- card 6 -->
+        <div class="row">
+          <!-- Card/Button trigger modal -->
+          <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+            <img src="<%=data[6].icon_url%>" width="200px">
+          </button>
+          <!-- Modal for card -->
+          <div class="modal" id="exampleModal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="card-title" ><%=data[6].card_name%></h5>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-body">
+                  <<p class="card-text">Elixer: <%=data[6].cost%></p>
+                  <p class="card-text">Max Level: <%=data[6].max_level%></p>
+                  <img src="<%=data[6].icon_url%>" width="200px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- card 7 -->
+        <div class="row">
+          <!-- Card/Button trigger modal -->
+          <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >
+            <img src="<%=data[7].icon_url%>" width="200px">
+          </button>
+          <!-- Modal for card -->
+          <div class="modal" id="exampleModal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="card-title" ><%=data[7].card_name%></h5>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-body">
+                  <p class="card-text">Elixer: <%=data[7].cost%></p>
+                    <p class="card-text">Max Level: <%=data[7].max_level%></p>
+                  <img src="<%=data[7].icon_url%>" width="200px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+    </div>
+
+
+
     </div>
   </div>
 </main>
@@ -174,7 +237,5 @@
 
 
 
-
- VARCHAR(60) UNIQUE NOT NULL,
- SMALLINT,
-cost SMALLINT,
+<!-- How are we connecting the refresh button? Href back to page? API Call like the login from Lab 9? -->
+<!-- DOes the data I have in for the cards match 100% or is that just the card images? -->
