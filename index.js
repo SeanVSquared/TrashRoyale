@@ -348,5 +348,12 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
+// GET request to /account (for testing's sake)
+app.get('/account', (req, res) => {
+  // Render the ACCOUNT page
+  console.log("attempting to render page account");
+  res.render('pages/account',);
+});
+
 app.listen(3000);
 console.log('Server is listening on port 3000');
