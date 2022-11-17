@@ -1,2 +1,0 @@
-INSERT INTO users (email, username, password, current_streak, max_streak, daily_challenges_completed, random_challenges_completed, clash_tag) VALUES
-(nijo4798@colorado.edu, NikoJ, thisIsPassword, 5, 10, 3, 2, XAST7J3);
