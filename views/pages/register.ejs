@@ -3,11 +3,10 @@
 
 <main>
   <div class="container">
+    <%- include ('../partials/message') %>
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
     <form action="/register" method="POST">
         <!-- New Code -->
-        <section class="" style="background-size: cover;
-        background-image: url(https://help.supercellsupport.com/uploads/_2048x1176_crop_center-center_90_none/CC-carousel.jpg?mtime=20201110135451&amp;focal=none&amp;tmtime=20210323104412);">
           <div class="container py-5">
             <div class="row d-flex justify-content-center align-items-center h-10">
               <div class="col col-xl-5">
@@ -22,19 +21,27 @@
     
                       <!-- Username input -->
                       <div class="form-outline mb-4">
-                        <input name="username" type="username" id="form2Example1" class="form-control" />
+                        <input name="username" type="username" id="form2Example1" class="form-control" required/>
                         <label class="form-label" for="form2Example1">Username</label>
                       </div>
 
                       <!-- Email input -->
                       <div class="form-outline mb-4">
-                        <input name="email" type="email" id="form2Example2" class="form-control" />
+                        <input name="email" type="email" id="form2Example2" class="form-control" required/>
                         <label class="form-label" for="form2Example2">Email</label>
+                      </div>
+
+                      <!-- ClashTag input -->
+                      <div class="form-outline mb-4">
+                        <input name="clashTag" type="text" id="form2Example4" class="form-control" maxlength="16" required/>
+                        <label class="form-label" for="form2Example4">Clash Tag</label>
+                        <br/>
+                        <a href="https://help.supercellsupport.com/brawl-stars/en/articles/what-is-player-id.html#:~:text=Tap%20the%20'Profile'%20button%20in,Tag%20underneath%20your%20profile%20icon." class="link-primary">How to find my Clash Tag</a>
                       </div>
 
                       <!-- Password input -->
                       <div class="form-outline mb-4">
-                      <input name="password" type="password" id="form2Example3" class="form-control" />
+                      <input name="password" type="password" id="form2Example3" class="form-control" required/>
                       <label class="form-label" for="form2Example3">Password</label>
                       </div>
 
@@ -48,7 +55,6 @@
               </div>
             </div>
           </div>
-        </section>
     </form>
   </div>
 </main>
