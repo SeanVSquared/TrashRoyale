@@ -132,7 +132,7 @@ app.post('/register', async (req, res) => {
   })
 });
 
-// GET request to /random (for testing's sake)
+// GET request to /random
 app.get('/random', (req, res) => {
   // Render the RANDOM CHALLENGE page
   // Parse the request headers to see if the user is attempting to render a pre-existing challenge
@@ -201,6 +201,11 @@ app.get('/random', (req, res) => {
   }
 
 });
+
+// POST Request for random
+app.post('/random', (req, res) => {
+  
+})
 
 // Get Request to update and test card database
 // TODO: turn into a better form to update card data dynamically
