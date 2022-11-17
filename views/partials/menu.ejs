@@ -1,29 +1,27 @@
 
 <header>
-    <nav  class="navbar navbar-expand-sm border-bottom">
-      <div class="container-fluid" >
-        <button
-          class="navbar-toggler ms-auto"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbar-collapse"
-          aria-controls="navbar"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <!-- TO-DO: For Discover, add a <a> tag with an attribute href to call the '/discover' API -->
-                <a href="/discover">Discover</a>
-            </li>
-          </ul>
-          <div class="nav-item me-1" style="float: right !important;">
-            <!-- TO-DO: For Logout, add a <a> tag with an attribute href to call the '/logout API -->
-                <a style="padding-left: 1em; float: right !important;" href="/logout">Logout</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-   </header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/home">TrashRoyale</a>
+    <div id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+
+    <img src="/images/LogoTry2.png" alt="Italian Trulli" class="mx-auto" style="height: 50px">
+
+    <div>
+    <!-- <div style="margin-left: auto !important;"> -->
+      <ul style="float: right;" class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link disabled" href="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="/register">Register</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
