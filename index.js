@@ -165,20 +165,26 @@ app.get('/random', (req, res) => {
           })
         }
         else {
-          // Else, we should now attempt to render this challenge
-          //console.log(challenge);
+          // CASE 2: we should now attempt to render this challenge
+          // Call the database with each card's ID to get it's information
+          const queryImage = `SELECT * FROM cards WHERE card_id IN ($1, $2, $3, $4, $5, $6, $7, $8)`
 
-          // Call the database with each card's ID to get their images
-          const queryImage = `SELECT icon_url FROM cards WHERE card_id IN ($1, $2, $3, $4, $5, $6, $7, $8)`
-
-          // Query for Card 1
+          // Query for each Card with an In statement
           return task.any(queryImage, [challenge.card_id_1, challenge.card_id_2, challenge.card_id_3, challenge.card_id_4, challenge.card_id_5, challenge.card_id_6, challenge.card_id_7, challenge.card_id_8])
           .then(data => {
-            // Extract the images from the returned rows
-            urlArray = [data[0].icon_url, data[1].icon_url, data[2].icon_url, data[3].icon_url, data[4].icon_url, data[5].icon_url, data[6].icon_url, data[7].icon_url];
+            // CASE 3: Bad card data
+            // If the data is null, something went wrong when trying to find the cards. Render the newrandom page with an error message
+            if(!data[0]) {
+              res.render('pages/newrandom', {
+                error: true,
+                message: "The challenge could not be properly accessed. Please try again later."
+              })
+            }
+            // CASE 4: It all works out nicely! Great!
             // With the data, render the page
             res.render('pages/random', {
-              urlArray
+              // Give the card data
+              data: data
             });
 
           })
@@ -190,8 +196,7 @@ app.get('/random', (req, res) => {
 
   }
   else {
-    // If a chaallenge ID was not provided, or was given as null, render the page to create a new random challenge
-    //console.log("attempting to render page newrandom");
+    // If a chaallenge ID was not provided, or was given as null, render the page to create a new random challenge without an error
     res.render('pages/newrandom');
   }
 
