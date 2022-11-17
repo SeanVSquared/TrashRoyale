@@ -98,7 +98,6 @@ app.post('/login', async (req, res) => {
             max_streak: user[0].max_streak,
             daily_challenges_completed: user[0].daily_challenges_completed,
             random_challenges_completed: user[0].random_challenges_completed
-            
         }
           req.session.save();
           res.redirect('/home')
