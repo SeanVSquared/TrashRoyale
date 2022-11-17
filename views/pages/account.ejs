@@ -1,0 +1,56 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<main>
+
+    <!-- this creates a card with a table with all of the user information -->
+    <div class="container" style="padding-top: 40px;">
+        <div class="row justify-content-center">
+            <div class="card bg-secondary text-white" style="max-width: 500px;">
+                <div class="row g-100">
+                    <div class="card-body">
+                        <table class="highlight">
+                            <tr>
+                                <th>USERID:</th>
+                                <td><%= user_id %></td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td><%= email %></td>
+                            </tr>
+                            <tr>
+                                <th>USERNAME:</th>
+                                <td><%= username %></td>
+                            </tr>
+                            <tr>
+                                <th>ClashTag:</th>
+                                <td><%= clash_tag %></td>
+                            </tr>
+                            <tr>
+                                <th>Current Streak:</th>
+                                <td><%= current_streak %></td>
+                            </tr>
+                            <tr>
+                                <th>Max Streak:</th>
+                                <td><%= max_streak %></td>
+                            </tr>
+                            <tr>
+                                <th>Daily Challenges Completed:</th>
+                                <td><%= daily_challenges_completed %></td>
+                            </tr>
+                            <tr>
+                                <th>Random Challenges Completed:</th>
+                                <td><%= random_challenges_completed %></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</main>
+
+<%- include ('../partials/footer') %>
+
+    <!-- git checkout main -->
+    <!-- git pull -->
+

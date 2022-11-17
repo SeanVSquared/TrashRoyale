@@ -14,6 +14,7 @@ const bcrypt = require('bcrypt');
 
 // Package Axios: Make HTTP requests to an external server from our server
 const axios = require('axios');
+const { homedir } = require('os');
 
 // database configuration
 const dbConfig = {
@@ -78,6 +79,8 @@ app.post('/login', async (req, res) => {
   console.log(req.body)
   const username = req.body.username;
   const query = `SELECT * FROM users WHERE username = $1;`;
+  const user = await db.any(query, [username]);
+
   db.any(query, [
       username,
   ]).then(async function(user) {
@@ -85,6 +88,7 @@ app.post('/login', async (req, res) => {
       if(match){
         req.session.user = {
             username: username,
+            tag: user[0].clash_tag,
         }
           req.session.save();
           res.redirect('/home')
@@ -315,7 +319,9 @@ app.use(auth);
 app.get('/home', async (req, res) => {
     //console.log(req.session.user.api_key);
     //console.log(req.session.user.tag);
-    const clashTag = '#LJV98808';
+    const clashTag = req.session.user.tag;
+    console.log(clashTag);
+    //const clashTag = '#LJV98808';
     const tag = clashTag.replace('#', '%23');
 
 
@@ -333,6 +339,7 @@ app.get('/home', async (req, res) => {
             res.render('pages/home', {
                 message: 'Not able to find player with your clash royale tag. Please check your tag and change it if needed in account page', 
                 username: req.session.user.username,
+                css: "home.css",
             })
         })
 
@@ -392,7 +399,9 @@ app.get('/home', async (req, res) => {
                 battlelog: battlelog,
                 clanRankings: clanRankings,
                 worstClanInfo: worstClanInfo,
-                username: req.session.user.username
+                username: req.session.user.username,
+                title: "Home",
+                css: "home.css",
             });
         })
         .catch(error => { //an error could occur if the incorrect clash royale tag is associated with the account so the eroor message reflects that
@@ -401,6 +410,7 @@ app.get('/home', async (req, res) => {
             res.render('pages/home', {
                 message: 'Uh Oh looks like something went wrong with your tag (please check your clash royale user tag and make changes if needed)',
                 username: req.session.user.username,
+                css: "home.css",
             })
         })
 
@@ -409,6 +419,13 @@ app.get('/home', async (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/login');
+});
+
+// GET request to /account (for testing's sake)
+app.get('/account', (req, res) => {
+  // Render the ACCOUNT page
+  console.log("attempting to render page account");
+  res.render('pages/account',);
 });
 
 app.listen(3000);
