@@ -133,6 +133,9 @@ app.get('/random', (req, res) => {
     // If a query was given, we need to now check the database for this challenge
     // Create a query for the database
     const randomQuery = `SELECT * FROM randchallenges WHERE challenge_id = '${challengeID}'`;
+
+    // Create a variable to store the strings of urls to render
+    let urlArray;
     
     // Query the database with this request in task form for multiple queries
     db.task(task => {
@@ -153,23 +156,24 @@ app.get('/random', (req, res) => {
         }
         else {
           // Else, we should now attempt to render this challenge
-          console.log(challenge);
+          //console.log(challenge);
 
           // Call the database with each card's ID to get their images
-          const queryImage = `SELECT icon_url FROM cards WHERE card_id = $1`
+          const queryImage = `SELECT icon_url FROM cards WHERE card_id IN ($1, $2, $3, $4, $5, $6, $7, $8)`
 
           // Query for Card 1
-          return task.any(queryImage, challenge.card_id_1)
+          return task.any(queryImage, [challenge.card_id_1, challenge.card_id_2, challenge.card_id_3, challenge.card_id_4, challenge.card_id_5, challenge.card_id_6, challenge.card_id_7, challenge.card_id_8])
           .then(data => {
-            // Extract the image
+            // Extract the images from the returned rows
+            urlArray = [data[0].icon_url, data[1].icon_url, data[2].icon_url, data[3].icon_url, data[4].icon_url, data[5].icon_url, data[6].icon_url, data[7].icon_url];
+            // With the data, render the page
+            res.render('pages/random', {
+              urlArray
+            });
+
           })
-
-          res.render('pages/random', {
-
-          });
           
         }
-        
 
       })
     })
