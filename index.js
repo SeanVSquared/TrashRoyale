@@ -204,7 +204,65 @@ app.get('/random', (req, res) => {
 
 // POST Request for random
 app.post('/random', (req, res) => {
-  
+  // A POST request to random will create a new random challenge, save it to the database, and redirect the user to the page of the new challenge
+  // First, get 8 unique card id's, descending
+  const cardsquery = `SELECT * FROM (SELECT * FROM cards ORDER BY RANDOM() LIMIT 8) AS randcards ORDER BY card_id;`;
+  // Query the database to get each of the card ids
+  db.task(task => {
+    return task.any(cardsquery)
+    .then(data => {
+      // With the data from each of the cards, we need to verify that this is a unique challenge
+      let newCards = data;
+      // this can be done by multiplying the array of id's by an array of prime numbers, as the order of the ids will always be ascending
+      let dotHash = 2 * newCards[0].card_id + 3 * newCards[1].card_id + 5 * newCards[2].card_id + 7 * newCards[3].card_id + 11 * newCards[4].card_id + 13 * newCards[5].card_id + 17 * newCards[6].card_id + 19 * newCards[7].card_id;
+      // This unique hash can be a quick reference to check if this random deck has been created before
+
+      // Before we insert this new value into the dabase, check if this random set is already in the database
+      // Create a query to check the database's hashed
+      const hashquery = `SELECT challenge_id FROM randchallenges WHERE dothash = ${dotHash}`;
+      // Query the db for this hash
+      return task.any(hashquery)
+      .then(data => {
+        // If there is a return from the DB, the random challenge already exists
+        if(data[0]) {
+          // TODO: Check if the current user has already played this challenge. If they have, query the DB for a new random challenge. will probably require a rewrite of this
+          // For now, just send them to the page with this preexisting challenge
+          res.redirect(`/random?randomid=${data[0].challenge_id}`)
+        }
+        else {
+          // If the data is not found, we can proceed with the creation of a new challenge in the DB
+          
+          // Make an array of the costs for use
+          let costArray = [newCards[0].cost, newCards[1].cost, newCards[2].cost, newCards[3].cost, newCards[4].cost, newCards[5].cost, newCards[6].cost, newCards[7].cost];
+          // FIRST: Find the average cost of the cards that were returned
+          let newAvgCost = (costArray[0] + costArray[1] + costArray[2] + costArray[3] + costArray[4] + costArray[5] + costArray[6] + costArray[7]) / 8;
+          // SECOND: Find the 4 cycle value, the sum of the 4 cheapest cards in the deck
+          // Sort the cost array in ascending order and sum the smallest 4 values
+          costArray.sort((a,b)=>{return a-b});
+          // Sum the minimum 4 values
+          let newFourCycle = costArray[0] + costArray[1] + costArray[2] + costArray[3];
+
+          // Query to the database to make a new challenge
+          return task.any(`INSERT INTO randchallenges (challenge_name, average_cost, fourcycle, card_id_1, card_id_2, card_id_3, card_id_4, card_id_5, card_id_6, card_id_7, card_id_8, dothash) values ('Test Challenge', ${newAvgCost}, ${newFourCycle}, ${newCards[0].card_id}, ${newCards[1].card_id}, ${newCards[2].card_id}, ${newCards[3].card_id}, ${newCards[4].card_id}, ${newCards[5].card_id}, ${newCards[6].card_id}, ${newCards[7].card_id}, ${dotHash}) RETURNING challenge_id`)
+          .then(data => {
+            // With the insert hopefully successful, redirect the user to the page with the newly create challenge
+            // TODO: Link this newly created challenge to the logged in user with the challenges to users table
+            res.redirect(`/random?randomid=${data[0].challenge_id}`)
+          })
+        }
+        
+      })
+
+    })
+  })
+  .catch(error => {
+    // Catch any errors relating to this database access and show a message on the page
+    res.render('pages/newrandom', {
+      error: true,
+      message: "Sorry, we could not process your request."
+    })
+  })
+
 })
 
 // Get Request to update and test card database
