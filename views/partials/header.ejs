@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <!-- TODO: Update HTML meta data to be custom to our website needs -->
     <meta charset="UTF-8" />
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <title>CSCI 3308 Lab 9</title>
-    <!-- TO-DO: Add the <link> tag to include bootstrap stylesheet -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+
+    <!-- Dynamic Title with EJS: --> 
+    <!-- Add a title property in render response to display a custom title -->
+    <title><%-(locals.title)?"Trash Royale • " + locals.title:"Trash Royale"%></title>
+
+    <!-- Simple favicon with the clash royale shield emblem -->
+    <link rel="icon" type="image/x-icon" href="/imgs/shield_emblem_favicon.ico">
+    
+    <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- Main Stylesheets -->
     <link href="/css/home.css" rel="stylesheet" type="text/css">
 
     <!-- Add's the  Materialize style sheets-->
@@ -17,4 +25,12 @@
             
 
 </head>
-<body>
+
+<% var bgArray = ['arena1.png', 'arena2.png', 'arena3.png', 'arena4.png'];
+    var bg = bgArray[Math.floor(Math.random() * bgArray.length)];
+    //Create base path of where images are stored
+    var path = '/images/';
+    var imageUrl = path + bg; 
+%>
+
+<body style="background-image: url('<%= imageUrl %>');background-size: cover;background-repeat: no-repeat">
