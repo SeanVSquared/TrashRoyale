@@ -218,17 +218,22 @@ app.post('/random', (req, res) => {
       // With the data from each of the cards, we need to verify that this is a unique challenge
       let newCards = data;
       // this can be done by multiplying the array of id's by an array of prime numbers, as the order of the ids will always be ascending
+      // TODO: This hashing method does not work and creates duplicates. it needs to be replaced
       let dotHash = 2 * newCards[0].card_id + 3 * newCards[1].card_id + 5 * newCards[2].card_id + 7 * newCards[3].card_id + 11 * newCards[4].card_id + 13 * newCards[5].card_id + 17 * newCards[6].card_id + 19 * newCards[7].card_id;
       // This unique hash can be a quick reference to check if this random deck has been created before
 
       // Before we insert this new value into the dabase, check if this random set is already in the database
       // Create a query to check the database's hashed
-      const hashquery = `SELECT challenge_id FROM randchallenges WHERE dothash = ${dotHash}`;
+      // FOR DEBUG PURPOSES: Select all from the database for the purpose of verification
+      const hashquery = `SELECT * FROM randchallenges WHERE dothash = ${dotHash}`;
       // Query the db for this hash
       return task.any(hashquery)
       .then(data => {
         // If there is a return from the DB, the random challenge already exists
         if(data[0]) {
+          // Create a log to compare the checked and in-db values to verify that my hashing algorithm works
+          console.log("Newly picked cards: " + newCards[0].card_id + " " + newCards[1].card_id + " " + newCards[2].card_id + " " + newCards[3].card_id + " " + newCards[4].card_id + " " + newCards[5].card_id + " " + newCards[6].card_id + " " + newCards[7].card_id + ", Hash: " + dotHash);
+          console.log("Cards being compared to: " + data[0].card_id_1 + " " + data[0].card_id_2 + " " + data[0].card_id_3 + " " + data[0].card_id_4 + " " + data[0].card_id_5 + " " + data[0].card_id_6 + " " + data[0].card_id_7 + " " + data[0].card_id_8 + ", Hash: " + data[0].dothash);
           // TODO: Check if the current user has already played this challenge. If they have, query the DB for a new random challenge. will probably require a rewrite of this
           // For now, just send them to the page with this preexisting challenge
           res.redirect(`/random?randomid=${data[0].challenge_id}`)
