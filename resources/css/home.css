@@ -117,6 +117,7 @@ a:focus {
 
 .battlelog {
     position: absolute;
+    color: rgba(0, 0, 0, 0.8);
     width: 44%;
     height: 88vh;
     left: 55%;
