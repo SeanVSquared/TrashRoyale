@@ -8,27 +8,28 @@
     <div class="card" style="border-radius: 1rem;">
     <!-- this is a bar that has the refresh and info like how many challenges the user completed -->
     <div class="container">
-      <div class="row" class="d-flex justify-content-center">
-          <!-- refresh button -->
-          <div class="col s12 m7"><a>
-              <input type="hidden"
-                  name="refresh"
-                  value="true">
-              </input>
-              <button type="submit" class="btn btn-primary">New Deck</button>
-              <!-- <h5 style="color: white;">New Deck</h5> -->
-          </a></div>
-          <!--  How many challenges ther user completes-->
-          <div class="col s12 m7">
-              <h5>Challenges Completed: 4</h5>
+      <div class="row justify-content-center">
+        <!--  How many challenges ther user completes-->
+        <!-- This will only happen if the user is logged in -->
+          <% if(isLoggedIn) { %>
+          <div class="col-md-auto">
+            <h5>Total Random Challenges Completed: <%=numChallengesCompleted  %></h5>
           </div>
+          <% } %>
+          <!-- refresh button -->
+          <form action="/random" method="POST">
+            <div class="col-md-auto">
+              <button type="submit" class="btn btn-primary" style="margin-top:7%">New Random Deck</button>
+            </div>
+          </form>
+          
       </div>
     </div>
 
     <!-- display the card information using referances to data such as data[0].info -->
     
     <!-- Container for the Deck cards -->
-    <div class="container">  
+    <div class="container-fluid">  
       <!-- 2 rows and 4 columns -->
       <div class="row" class="d-flex justify-content-center">
         <!-- here we have card types that will display our 'card' info -->
@@ -228,8 +229,48 @@
     </div>
 
     </div>
-    
-    <p>hello</p>
+    <!-- Show the completion status of the challenge for the user -->
+    <% if(isLoggedIn) { %>
+      <!-- If logged in, show the progress of the challenge -->
+      <% if(isCompleted) { %>
+        <div class="container">
+          <div class="alert alert-success">
+            <div class="row justify-content-center">
+              <img src="">
+              <h6><%=username%> has completed this challenge!</h6>
+              <img src="">
+            </div>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="container">
+          <div class="alert alert-danger">
+            <div class="row justify-content-center">
+              <h6><%=username%> has NOT completed this challenge!</h6>
+            </div>
+            <!-- Form button to check for completion by viewing the clash royale API -->
+            <form action="/verifyUser" method="POST">
+              <button class="btn btn-dark btn-lg btn-block" type="submit">Check Completion!</button>
+            </form>
+          </div>
+        </div>
+      <% } %>
+      
+    <% } else { %>
+      <!-- If not logged in, Have a button linking to the login page -->
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-auto">
+            <p>Want to save your progress?</p>
+          </div>
+          <div class="col-md-auto">
+            <a href="/pages/login">
+              <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    <% } %>
 
     </div>
   </div>

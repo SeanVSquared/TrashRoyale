@@ -123,8 +123,8 @@ app.post('/register', async (req, res) => {
   console.log(clash_tag)
   const hash = await bcrypt.hash(req.body.password, 10);
   console.log(hash)
-  const query = `INSERT INTO users (username, email, clash_tag, password)
-  values ($1, $2, $3, $4);`
+  const query = `INSERT INTO users (username, email, clash_tag, password, random_challenges_completed)
+  values ($1, $2, $3, $4, 0);`
   
   db.any(query, [
       username, email, clash_tag,
@@ -162,10 +162,22 @@ app.get('/random', (req, res) => {
           // Render the new random page with a message stating that the challenge could not be found
           // console.log("Could not find a challenge of ID: " + challengeID);
           // Deliver a message to the page
-          res.render('pages/newrandom', {
-            error: true,
-            message: "A challenge of this ID does not exist."
-          })
+          // Check if a user is logged in, and if they are, display their completion on this challenge
+          if(req.session.user && req.session.user != null) {
+            res.render('pages/newrandom', {
+              // Render the page with the users information and the error message
+              error: true,
+              message: "A challenge of this ID does not exist.",
+              username: req.session.user.username
+            })
+          } else {
+            // Render the page with the error, but without the user's information
+            res.render('pages/newrandom', {
+              error: true,
+              message: "A challenge of this ID does not exist."
+            })
+          }
+          
         }
         else {
           // CASE 2: we should now attempt to render this challenge
@@ -187,34 +199,48 @@ app.get('/random', (req, res) => {
             let cardData = data;
             // Check if a user is logged in, and if they are, display their completion on this challenge
             if(req.session.user && req.session.user != null) {
-              // Query the DB to see if the user has attempted this challenge
-              const queryUserToChl = `SELECT * FROM (SELECT * FROM users_to_randoms WHERE user_id = ${req.session.user.user_id}) AS userchallenges WHERE challenge_id = ${challengeID}`;
-              return task.any(queryUserToChl)
+              
+              // Get the number of random challeenges completed
+              return task.any(`SELECT random_challenges_completed FROM users WHERE user_id = ${req.session.user.user_id}`)
               .then(data => {
-                // Check if a return from the DB was made
-                if(data[0]) {
-                  // If a return was made, render the page with the user's completion progress
-                  res.render('pages/random', {
-                    // Give the card data
-                    data: cardData,
-                    isLoggedIn: true,
-                    isCompleted: data[0].is_completed
-                  });
-                } else {
-                  // If nothing was returned from the DB, the user has not attempted this challenge yet. Insert into the DB that they are now attempting this challenge
-                  return task.any(`INSERT INTO users_to_randoms (user_id, challenge_id, is_completed) values (${req.session.user.user_id}, ${challengeID}, false) RETURNING is_completed`)
-                  .then(data => {
-                    console.log("User tried to see a challenge logged in, and they have been added to this challenge. Completion: " + data)
-                    // With the user now linked to the challenge, render the page along with their completion
+                // Set this value into a variable for later user
+                let numChallengesCompleted = data[0].random_challenges_completed;
+
+                // Query the DB to see if the user has attempted this challenge
+                const queryUserToChl = `SELECT * FROM (SELECT * FROM users_to_randoms WHERE user_id = ${req.session.user.user_id}) AS userchallenges WHERE challenge_id = ${challengeID}`;
+                return task.any(queryUserToChl)
+                .then(data => {
+                  // Check if a return from the DB was made
+                  if(data[0]) {
+                    // If a return was made, render the page with the user's completion progress
                     res.render('pages/random', {
                       // Give the card data
                       data: cardData,
                       isLoggedIn: true,
-                      isCompleted: data[0].is_completed
+                      username: req.session.user.username,
+                      isCompleted: data[0].is_completed,
+                      numChallengesCompleted: numChallengesCompleted
                     });
-                  })
-                }
+                  } else {
+                    // If nothing was returned from the DB, the user has not attempted this challenge yet. Insert into the DB that they are now attempting this challenge
+                    return task.any(`INSERT INTO users_to_randoms (user_id, challenge_id, is_completed) values (${req.session.user.user_id}, ${challengeID}, true) RETURNING is_completed`)
+                    .then(data => {
+                      //console.log("User tried to see a challenge logged in, and they have been added to this challenge. Completion: " + data[0])
+                      // With the user now linked to the challenge, render the page along with their completion
+                      res.render('pages/random', {
+                        // Give the card data
+                        data: cardData,
+                        isLoggedIn: true,
+                        username: req.session.user.username,
+                        isCompleted: data[0].is_completed,
+                        numChallengesCompleted: numChallengesCompleted
+                      });
+                    })
+                  }
+                })
+
               })
+
             } else {
               // If a user is not logged in, render the page, but give the option to sign in to save challenge progress
               // With the data, render the page
@@ -519,4 +545,20 @@ console.log('Server is listening on port 3000');
 // Function cantorPair: Implementation of the cantor pairing function to be used to create unique deck ID's
 function cantorPair(a, b) {
   return 0.5 * (a + b) * (a + b + 1) * b;
+}
+
+// Function incrementUserChallengesCompleted: incrememnt the number of challenges completed in the database for some user
+function incrementUserChallengesCompleted(user_id) {
+  // First, query the database for the current number of challenges completed
+  db.any(`SELECT count(*) FROM (SELECT * FROM users_to_randoms WHERE user_id = ${user_id})) WHERE is_completed = true`)
+  .then(data => {
+    console.log(data[0])
+    // With this result, add 1, and reinsert into the database
+    let newCompleted = data[0] + 1;
+    return db.any(`UPDATE users SET random_challenges_completed = ${newCompleted} WHERE user_id = ${user_id} RETURNING random_challenges_completed`)
+  })
+  .catch(error => {
+    // Catch any errors
+    console.log(error)
+  })
 }
