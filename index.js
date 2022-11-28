@@ -206,6 +206,93 @@ app.get('/random', (req, res) => {
 
 });
 
+app.post('/bad', (req, res) => {
+
+    const getRandBad = 'SELECT challenge_id FROM badchallenges OFFSET floor(random() * (SELECT COUNT(*) FROM badchallenges)) LIMIT 1;'
+
+    db.task(task => {
+        return task.any(getRandBad)
+            .then(data => {
+                res.redirect('/bad?badid=' + data[0].challenge_id);
+            })
+    })
+
+});
+
+
+// GET request to /random (for testing's sake)
+app.get('/bad', (req, res) => {
+
+    // Parse the request headers to see if the user is attempting to render a pre-existing challenge
+    const badChallID = Number(req.query.badid);
+
+    // Check to see if an id was queried. If not, render the page for just a button
+    if (badChallID && badChallID != null) {
+        // If a query was given, we need to now check the database for this challenge
+        // Create a query for the database
+        const badQuery = `SELECT * FROM badchallenges WHERE challenge_id = '${badChallID}'`;
+
+        // Create a variable to store the strings of urls to render
+        let imageArray;
+
+        // Query the database with this request in task form for multiple queries
+        db.task(task => {
+            // Query the database for the challenge ID
+            return task.any(badQuery)
+                .then(data => {
+                    // We now have the data output, so we need to handle a few cases
+                    let challenge = data[0];
+                    // CASE 1: The data is null. This means that a challenge with this ID does not exist
+                    if (!challenge) {
+                        // Render the new random page with a message stating that the challenge could not be found
+                        // console.log("Could not find a challenge of ID: " + challengeID);
+                        // Deliver a message to the page
+                        console.log('Id not found in table');
+                        res.render('pages/baddecksDefault', {
+                            error: true,
+                            message: "A challenge of this ID does not exist."
+                        })
+                    }
+                    else {
+                        // CASE 2: we should now attempt to render this challenge
+                        // Call the database with each card's ID to get it's information
+                        const queryImage = `SELECT * FROM cards WHERE card_id IN ($1, $2, $3, $4, $5, $6, $7, $8)`
+
+                        // Query for each Card with an In statement
+                        return task.any(queryImage, [challenge.card_id_1, challenge.card_id_2, challenge.card_id_3, challenge.card_id_4, challenge.card_id_5, challenge.card_id_6, challenge.card_id_7, challenge.card_id_8])
+                            .then(data => {
+                                // CASE 3: Bad card data
+                                // If the data is null, something went wrong when trying to find the cards. Render the newrandom page with an error message
+                                if (!data[0]) {
+                                    res.render('pages/baddecksDefault', {
+                                        error: true,
+                                        message: "The challenge could not be properly accessed. Please try again later."
+                                    })
+                                }
+                                // CASE 4: It all works out nicely! Great!
+                                // With the data, render the page
+                                console.log(data);
+                                res.render('pages/baddecks', {
+                                    // Give the card data
+                                    data: data
+                                });
+
+                            })
+
+                    }
+
+                })
+        })
+
+    }
+    else {
+        // If a chaallenge ID was not provided, or was given as null, render the page to create a new random challenge without an error
+        res.render('pages/baddecksDefault');
+        console.log('Id not provided');
+    }
+
+});
+
 // Get Request to update and test card database
 // TODO: turn into a better form to update card data dynamically
 // TODO: add functionality to dynamically add attributes to cards through UI
