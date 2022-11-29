@@ -20,7 +20,6 @@ INSERT INTO cards (card_name, cost, icon_url, max_level) VALUES ('Knight', 1, 'h
 ('Witch', 8, 'https://api-assets.clashroyale.com/cards/300/cfwk1vzehVyHC-uloEIH6NOI0hOdofCutR5PyhIgO6w.png', 12),
 ('Guards', 9, 'https://api-assets.clashroyale.com/cards/300/1ArKfLJxYo6_NU_S9cAeIrfbXqWH0oULVJXedxBXQlU.png', 9);
 
-
 -- TODO DANIEL: Attributes:
 
 -- Spell

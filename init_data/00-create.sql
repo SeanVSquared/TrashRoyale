@@ -47,7 +47,10 @@ CREATE TABLE IF NOT EXISTS randchallenges(
   card_id_5 SMALLINT,
   card_id_6 SMALLINT,
   card_id_7 SMALLINT,
-  card_id_8 SMALLINT
+  card_id_8 SMALLINT,
+  dothash BIGINT,
+  dothash2 BIGINT,
+  dothash3 BIGINT
 );
 
 -- create a new table to store DAILY challenges that have been given out
