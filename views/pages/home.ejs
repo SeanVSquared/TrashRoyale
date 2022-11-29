@@ -9,7 +9,7 @@
 
         <% let player = results; %>
         <% let recentMatches = battlelog.data;
-           console.log(recentMatches); %>
+           // console.log(recentMatches); %>
         <%    let worstClan_members = worstClanInfo.data.memberList; %>
         <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
         <%  let profilePic = `<div class="profile-image"> 
@@ -53,7 +53,7 @@
                         <h4 class="card-title">Most Recent Battles</h4>
                     </div>
                 </section>
-                <% recentMatches.forEach(function(match) { console.log(match); 
+                <% recentMatches.forEach(function(match) { //console.log(match); 
                     let carouselButtonIDCnt = 0;
                     carouselButtonIDCnt++;
                     let matchDeck = match.team[0].cards;
