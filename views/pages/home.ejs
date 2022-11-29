@@ -82,7 +82,7 @@
                             <div class="carousel-inner">
                                 <% let count = 0; %>
                                     <div  class="container">
-                                <% for(var i = 0; i < len; i = i + 4) { //gets photos for cards in deck used in match %> 
+                                <% for(var i = 0; i < len; i = i + 4) { count++; //gets photos for cards in deck used in match %> 
                                     <%  let cardImg1 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i].iconUrls.medium}">`;
                                     let cardImg2 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i + 1].iconUrls.medium}">`;
                                     let cardImg3 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i + 2].iconUrls.medium}">`;

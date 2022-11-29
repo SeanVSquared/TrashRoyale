@@ -127,9 +127,9 @@ app.post('/register', async (req, res) => {
   const username = req.body.username;
   const email = req.body.email
   const clash_tag = req.body.clashTag
-  console.log(clash_tag)
+  //console.log(clash_tag)
   const hash = await bcrypt.hash(req.body.password, 10);
-  console.log(hash)
+  //console.log(hash)
   const query = `INSERT INTO users (username, email, clash_tag, password, random_challenges_completed)
   values ($1, $2, $3, $4, 0);`
   
