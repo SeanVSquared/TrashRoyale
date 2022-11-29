@@ -91,6 +91,14 @@ app.post('/login', async (req, res) => {
             username: username,
             tag: user[0].clash_tag,
             user_id: user[0].user_id,
+
+            //Only used for account page
+            email: user[0].email,
+            current_streak: user[0].current_streak,
+            max_streak: user[0].max_streak,
+            daily_challenges_completed: user[0].daily_challenges_completed,
+            random_challenges_completed: user[0].random_challenges_completed
+            
         }
           req.session.save();
           res.redirect('/home')
