@@ -27,6 +27,11 @@
 
                 </form>
               </div>
+              <% if(isLoggedIn) { %>
+                <div class="col-md-auto">
+                  <h5>Total Random Challenges Completed: <%=numChallengesCompleted  %></h5>
+                </div>
+                <% } %>
             </div>
           </div>
 
