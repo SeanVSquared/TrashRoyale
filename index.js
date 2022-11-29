@@ -80,7 +80,7 @@ app.post('/login', async (req, res) => {
   const username = req.body.username;
   const query = `SELECT * FROM users WHERE username = $1;`;
   const user = await db.any(query, [username]);
-
+  
   db.any(query, [
       username,
   ]).then(async function(user) {
@@ -421,63 +421,6 @@ app.get('/home', async (req, res) => {
     console.log(clashTag);
     //const clashTag = '#LJV98808';
     const tag = clashTag.replace('#', '%23');
-
-
-    const battlelog = await axios({
-        
-        url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,
-            method: 'get',
-            dataType:'json',
-            headers: {
-                "Authorization": `Bearer ${process.env.API_KEY}`,
-            }
-        })
-        .catch(error => { //If there is an error here it most likely will be with the tag registered in the users account so it sends the appropriate message
-            console.log(error);
-            res.render('pages/home', {
-                message: 'Not able to find player with your clash royale tag. Please check your tag and change it if needed in account page', 
-                username: req.session.user.username,
-                css: "home.css",
-            })
-        })
-
-        const clanRankings = await axios({
-        
-            url: `https://api.clashroyale.com/v1/locations/57000006/rankings/clans`,
-                method: 'get',
-                dataType:'json',
-                headers: {
-                    // Bearer apikey
-                    "Authorization": `Bearer ${process.env.API_KEY}`,
-                    // `Bearer ${req.session.user.api_key} does not work
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
-                    message: 'Error with retrieving clan rankings', 
-                })
-            })
-
-        
-            var worstClan = clanRankings.data.items[998];
-            var worstClanTag = worstClan.tag.replace('#', '%23');
-        
-            const worstClanInfo = await axios({
-        
-            url: `https://api.clashroyale.com/v1/clans/${worstClanTag}`,
-                method: 'get',
-                dataType:'json',
-                headers: {
-                    "Authorization": `Bearer ${process.env.API_KEY}`,
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
-                    message: 'Error retrieving clan rankings info', 
-                })
-            })
     
     
     axios({
@@ -490,8 +433,63 @@ app.get('/home', async (req, res) => {
                 
             }
         })
-        .then(results => {
+        .then(async (results) => {
             //console.log(results); // the results will be displayed on the terminal if the docker containers are running
+            const battlelog = await axios({
+        
+              url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,
+                  method: 'get',
+                  dataType:'json',
+                  headers: {
+                      "Authorization": `Bearer ${process.env.API_KEY}`,
+                  }
+              })
+              .catch(error => { //If there is an error here it most likely will be with the tag registered in the users account so it sends the appropriate message
+                  res.render('pages/home', {
+                      error: error,
+                      message: 'Not able to find player with your clash royale tag. Please check your tag and change it if needed in account page', 
+                      username: req.session.user.username,
+                      css: "home.css",
+                  })
+              })
+      
+              const clanRankings = await axios({
+              
+                  url: `https://api.clashroyale.com/v1/locations/57000006/rankings/clans`,
+                      method: 'get',
+                      dataType:'json',
+                      headers: {
+                          // Bearer apikey
+                          "Authorization": `Bearer ${process.env.API_KEY}`,
+                          // `Bearer ${req.session.user.api_key} does not work
+                      }
+                  })
+                  .catch(error => {
+                      console.log(error);
+                      res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
+                          message: 'Error with retrieving clan rankings', 
+                      })
+                  })
+      
+              
+                  var worstClan = clanRankings.data.items[998];
+                  var worstClanTag = worstClan.tag.replace('#', '%23');
+              
+                  const worstClanInfo = await axios({
+              
+                  url: `https://api.clashroyale.com/v1/clans/${worstClanTag}`,
+                      method: 'get',
+                      dataType:'json',
+                      headers: {
+                          "Authorization": `Bearer ${process.env.API_KEY}`,
+                      }
+                  })
+                  .catch(error => {
+                      console.log(error);
+                      res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
+                          message: 'Error retrieving clan rankings info', 
+                      })
+                  })
             res.render('pages/home', {
                 results: results,
                 battlelog: battlelog,
@@ -499,16 +497,17 @@ app.get('/home', async (req, res) => {
                 worstClanInfo: worstClanInfo,
                 username: req.session.user.username,
                 title: "Home",
-                css: "home.css",
+                css: "css/home.css",
             });
         })
-        .catch(error => { //an error could occur if the incorrect clash royale tag is associated with the account so the eroor message reflects that
+        .catch(error => { //an error could occur if the incorrect clash royale tag is associated with the account so the erorr message reflects that
             // Handle errors
             //console.log(error);
             res.render('pages/home', {
-                message: 'Uh Oh looks like something went wrong with your tag (please check your clash royale user tag and make changes if needed)',
+                error: error,
+                message: error.response.data.message,
                 username: req.session.user.username,
-                css: "home.css",
+                css: "css/home.css",
             })
         })
 
@@ -523,7 +522,9 @@ app.get('/logout', (req, res) => {
 app.get('/account', (req, res) => {
   // Render the ACCOUNT page
   console.log("attempting to render page account");
-  res.render('pages/account',);
+  res.render('pages/account', {
+        css: "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css",
+  });
 });
 
 app.listen(3000);

@@ -3,13 +3,12 @@
 
 <main>
     <div class="container-fluid">
-        <% if(typeof results === 'undefined') {  %>
+        <% if(typeof results === 'undefined') { %>
             <%- include ('../partials/message') %>
         <% } else { %> 
 
         <% let player = results; %>
-        <% let recentMatches = battlelog.data;
-           // console.log(recentMatches); %>
+        <% let recentMatches = battlelog.data; %>
         <%    let worstClan_members = worstClanInfo.data.memberList; %>
         <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
         <%  let profilePic = `<div class="profile-image"> 
@@ -33,6 +32,7 @@
                                 <h3><%= player.data.wins %></h3>
                                 <p>Wins</p>
                             </div>
+
                             <div class="col-sm-4">
                                 <h3><%= player.data.losses %></h3>
                                 <p>Losses</p>
@@ -67,7 +67,7 @@
                     } else {
                         win = false;
                     }
-                    console.log(winCountBefore); %>
+                    %>
                     
                 <section class="card mb-3 sticky-md">
                     <div class="card-body">
@@ -82,8 +82,7 @@
                             <div class="carousel-inner">
                                 <% let count = 0; %>
                                     <div  class="container">
-                                <% for(var i = 0; i < len; i = i + 4) {%>
-                                    <% count++; %>
+                                <% for(var i = 0; i < len; i = i + 4) { //gets photos for cards in deck used in match %> 
                                     <%  let cardImg1 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i].iconUrls.medium}">`;
                                     let cardImg2 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i + 1].iconUrls.medium}">`;
                                     let cardImg3 = `<img style=" height: 12vh !important; width: 6vw !important;" class="d-block w-25" src="${matchDeck[i + 2].iconUrls.medium}">`;
