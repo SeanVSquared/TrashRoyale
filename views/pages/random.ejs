@@ -21,16 +21,52 @@
     <!-- here we have card types that will display our 'card' info -->
     <div class="flex-container">
       <div class = "flex-child">
-        <div class="random-deck-stats">
-          <div class="random-challenges">
+        <div class="random-deck-stats" style="padding-left: 58px;">
+          <div class="card-body">
             <% if(isLoggedIn) { %>
               <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Total Challenges Completed: <%=numChallengesCompleted  %></h5>
             <% } %>
           </div>
-          <div class="random-challenges">
-            <p>test</p>
+        </div>
+      </div>
+      <div class = "flex-child">
+        <div class="random-deck-card">
+          <div style="padding-left: 235px;padding-bottom: 25px;"> 
+            <div class="card-body" style="padding-bottom: 10px;">
+              <h5 class="card-title" style="padding: 10px;">Challenge Deck: </h5>
+            </div>
           </div>
-          <div>
+          <div style="padding-left: 40px;">
+            <div class="card-body" style="padding-left: 15px; width: 92%; height: 60%;">
+              <table class="card-title">
+                <% for(var i = 0; i < data.length; i = i + 4) { %>
+                  <tr>
+                    <td class="random-row">
+                      <button type="button" class="random-deck-card-button">
+                        <img class="random-deck-image" src="<%=data[i].icon_url%>">
+                      </button>
+                    </td>
+                    <td class="random-row">
+                      <button type="button" class="random-deck-card-button">
+                        <img class="random-deck-image" src="<%=data[i+1].icon_url%>">
+                      </button>
+                    </td>
+                    <td class="random-row">
+                      <button type="button" class="random-deck-card-button">
+                        <img class="random-deck-image" src="<%=data[i+2].icon_url%>">
+                      </button>
+                    </td>
+                    <td class="random-row">
+                      <button type="button" class="random-deck-card-button">
+                        <img class="random-deck-image" src="<%=data[i+3].icon_url%>">
+                      </button>
+                    </td>
+                  </tr>
+                <% } %>
+              </table>
+            </div>
+          </div>
+          <div style="padding-top: 30px; padding-bottom: 10px;">
             <% if(isCompleted) { %>
               <div class="container">
                 <div class="alert alert-success">
@@ -55,41 +91,6 @@
               </div>
             <% } %>
           </div>
-        </div>
-      </div>
-      <div class = "random-deck-outline flex-child">
-        <div class="random-deck-card">
-          <div>
-            <div class="random-challenges">
-              <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Challenge Deck: </h5>
-            </div>
-          </div>
-          <table class="card-title">
-            <% for(var i = 0; i < data.length; i = i + 4) { %>
-              <tr>
-                <td class="random-row">
-                  <button type="button" class="random-deck-card-button">
-                    <img class="random-deck-image" src="<%=data[i].icon_url%>">
-                  </button>
-                </td>
-                <td class="random-row">
-                  <button type="button" class="random-deck-card-button">
-                    <img class="random-deck-image" src="<%=data[i+1].icon_url%>">
-                  </button>
-                </td>
-                <td class="random-row">
-                  <button type="button" class="random-deck-card-button">
-                    <img class="random-deck-image" src="<%=data[i+2].icon_url%>">
-                  </button>
-                </td>
-                <td class="random-row">
-                  <button type="button" class="random-deck-card-button">
-                    <img class="random-deck-image" src="<%=data[i+3].icon_url%>">
-                  </button>
-                </td>
-              </tr>
-            <% } %>
-          </table>
         </div>
       </div>
     </div>
