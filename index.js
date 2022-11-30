@@ -147,7 +147,7 @@ app.post('/register', async (req, res) => {
 });
 
 // GET request to /random
-app.get('/random', (req, res) => {
+app.get('/random', async (req, res) => {
   // Render the RANDOM CHALLENGE page
   // Parse the request headers to see if the user is attempting to render a pre-existing challenge
   const challengeID = Number(req.query.randomid);
@@ -161,7 +161,7 @@ app.get('/random', (req, res) => {
     // Query the database with this request in task form for multiple queries
     db.task(task => {
       // Query the database for the challenge ID
-      return task.any(randomQuery)
+      return  task.any(randomQuery)
       .then(data => {
         // We now have the data output, so we need to handle a few cases
         let challenge = data[0];
@@ -172,17 +172,27 @@ app.get('/random', (req, res) => {
           // Deliver a message to the page
           // Check if a user is logged in, and if they are, display their completion on this challenge
           if(req.session.user && req.session.user != null) {
-            res.render('pages/newrandom', {
-              // Render the page with the users information and the error message
-              error: true,
-              message: "A challenge of this ID does not exist.",
-              username: req.session.user.username
+            // Render the page with the users information and the error message
+            // Fetch the number of challenges completed from the database
+            return task.any(`SELECT random_challenges_completed FROM users WHERE user_id = ${req.session.user.user_id}`)
+            .then(data => {
+              // Set this value into a variable for later user
+              let numChallengesCompleted = data[0].random_challenges_completed;
+              // Render the page to create a new random challenge passing the information needed for the header
+              res.render('pages/newrandom', {
+                error: true,
+                message: "A challenge of this ID does not exist.",
+                username: req.session.user.username,
+                isLoggedIn: true,
+                numChallengesCompleted: numChallengesCompleted
+              })
             })
           } else {
             // Render the page with the error, but without the user's information
             res.render('pages/newrandom', {
               error: true,
-              message: "A challenge of this ID does not exist."
+              message: "A challenge of this ID does not exist.",
+              isLoggedIn: false
             })
           }
           
@@ -194,7 +204,7 @@ app.get('/random', (req, res) => {
 
           // Query for each Card with an In statement
           return task.any(queryImage, [challenge.card_id_1, challenge.card_id_2, challenge.card_id_3, challenge.card_id_4, challenge.card_id_5, challenge.card_id_6, challenge.card_id_7, challenge.card_id_8])
-          .then(data => {
+          .then(async data => {
             // CASE 3: Bad card data
             // If the data is null, something went wrong when trying to find the cards. Render the newrandom page with an error message
             if(!data[0]) {
@@ -207,8 +217,90 @@ app.get('/random', (req, res) => {
             let cardData = data;
             // Check if a user is logged in, and if they are, display their completion on this challenge
             if(req.session.user && req.session.user != null) {
+
+              // Get the clash tag from the user session
+              const clashTag = req.session.user.tag;
+              const tag = clashTag.replace('#', '%23');
               
-              // Get the number of random challeenges completed
+              // Check the Clash royale API for completion
+              const battlelog = await axios({
+              url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,
+                method: 'get',
+                dataType:'json',
+                headers: {
+                  "Authorization": `Bearer ${process.env.API_KEY}`,
+                }
+              })
+              .catch(error => { //If there is an error here it most likely will be with the tag registered in the users account so it sends the appropriate message
+                console.log(error);
+              })
+              // TODO handle bad cases for battlelog
+              // Get the recent matches for this player
+              let recentMatches = battlelog.data;
+              // Loop through each match to check if the correct cards were used
+
+              recentMatches.forEach(match => {
+                // Pull the cards played
+                let cards = match.team[0].cards;
+                // Create a vector of the card IDs from the match data
+                let cardIDs = [cards[0].id, cards[1].id, cards[2].id, cards[3].id, cards[4].id, cards[5].id, cards[6].id, cards[7].id];
+                // This will be the clash royale version of the ID. we need to convert it to our IDs first, so do this with a database request
+                db.task(task => {
+                  return task.any(`SELECT * FROM cards WHERE clash_id IN ($1, $2, $3, $4, $5, $6, $7, $8) ORDER BY card_id`, cardIDs)
+                  .then(data => {
+                    // With the cards, run the hashing algorithm
+                    let newCards = data;
+                    let dotHash = cantorPair( cantorPair(newCards[0].card_id, newCards[1].card_id), newCards[2].card_id );
+                    let dotHash2 = cantorPair( cantorPair(newCards[3].card_id, newCards[4].card_id), newCards[5].card_id );
+                    let dotHash3 = cantorPair(newCards[6].card_id, newCards[7].card_id)
+                    // Check the random challenges database for a match to the hash
+                    const hashquery = `SELECT * FROM randchallenges WHERE (dothash = ${dotHash} AND dothash2 = ${dotHash2} AND dothash3 = ${dotHash3} AND challenge_id = ${challengeID})`;
+                    // Query the database
+                    return task.any(hashquery)
+                    .then(data => {
+                      // If there is a return to the data, we have a match in the database!
+                      if(data[0]) {
+                        // Check if the player won
+                        // Verify if the match was won
+                        let win = false;
+                        if(match.team[0].crowns == match.opponent[0].crowns) {
+                            win = false;
+                        } else if (match.team[0].crowns > match.opponent[0].crowns) {
+                            win = true;
+                        } else {
+                            win = false;
+                        }
+                        if(win) {
+                          // If the player won the challenge, we need to mark it as complete and update their total
+                          return task.any(`UPDATE users_to_randoms SET is_completed = true WHERE (user_id = ${req.session.user.user_id} AND challenge_id = ${challenge_id})`)
+                          .then(data => {
+                            // Increment the count on this user's table
+                            incrementUserChallengesCompleted(req.session.user.user_id);
+                            // Close the task
+                            task.end();
+                          })
+
+                        } else {
+                          // If they didnt win, we don't need to do naything else
+                          task.end();
+                        }
+                      } else {
+                        // If there was not a return, we don't need to do anything else
+                        task.end();
+                      }
+
+                    })
+                  })
+                })
+                .catch(error => {
+                  // Catch any errors
+                  console.log(error)
+                })
+                
+
+              })
+
+              // Get the number of random challenges completed
               return task.any(`SELECT random_challenges_completed FROM users WHERE user_id = ${req.session.user.user_id}`)
               .then(data => {
                 // Set this value into a variable for later user
@@ -227,7 +319,8 @@ app.get('/random', (req, res) => {
                       isLoggedIn: true,
                       username: req.session.user.username,
                       isCompleted: data[0].is_completed,
-                      numChallengesCompleted: numChallengesCompleted
+                      numChallengesCompleted: numChallengesCompleted,
+                      css: "home.css"
                     });
                   } else {
                     // If nothing was returned from the DB, the user has not attempted this challenge yet. Insert into the DB that they are now attempting this challenge
@@ -241,7 +334,8 @@ app.get('/random', (req, res) => {
                         isLoggedIn: true,
                         username: req.session.user.username,
                         isCompleted: data[0].is_completed,
-                        numChallengesCompleted: numChallengesCompleted
+                        numChallengesCompleted: numChallengesCompleted,
+                        css: "home.css"
                       });
                     })
                   }
@@ -265,22 +359,158 @@ app.get('/random', (req, res) => {
 
       })
     })
+    .catch(error => {
+      // Handle Errors
+      console.log(error)
+      res.render('pages/newrandom', {
+        isLoggedIn: false
+      })
+    })
 
   }
   else {
     // Check if a user is logged in
     if(req.session.user && req.session.user != null) {
-      // Render the page to create a new random challenge passing the information needed for the header
-      res.render('pages/newrandom', {
-        username: req.session.user.username,
+      // Fetch the number of challenges completed from the database
+      db.task(task => {
+        return task.any(`SELECT random_challenges_completed FROM users WHERE user_id = ${req.session.user.user_id}`)
+        .then(data => {
+          // Set this value into a variable for later user
+          let numChallengesCompleted = data[0].random_challenges_completed;
+          // Render the page to create a new random challenge passing the information needed for the header
+          res.render('pages/newrandom', {
+            username: req.session.user.username,
+            isLoggedIn: true,
+            numChallengesCompleted: numChallengesCompleted,
+            css: "home.css"
+          });
+      })
+      })
+      .catch(error => {
+        // Handle Errors
+        console.log(error)
+        res.render('pages/newrandom', {
+          isLoggedIn: false
+        })
       });
     } else {
       // If a challenge ID was not provided, or was given as null, render the page to create a new random challenge without an error
-    res.render('pages/newrandom');
+    res.render('pages/newrandom', {
+      isLoggedIn: false
+    });
     }
   }
 
 });
+
+// POST Request for random
+app.post('/random', (req, res) => {
+  // A POST request to random will create a new random challenge, save it to the database, and redirect the user to the page of the new challenge
+  // First, get 8 unique card id's, descending
+  const cardsquery = `SELECT * FROM (SELECT * FROM cards ORDER BY RANDOM() LIMIT 8) AS randcards ORDER BY card_id;`;
+  // Query the database to get each of the card ids
+  db.task(task => {
+    return task.any(cardsquery)
+    .then(data => {
+      // With the data from each of the cards, we need to verify that this is a unique challenge
+      let newCards = data;
+      // this can be done by using Cantor's pairing function
+      let dotHash = cantorPair( cantorPair(newCards[0].card_id, newCards[1].card_id), newCards[2].card_id );
+      let dotHash2 = cantorPair( cantorPair(newCards[3].card_id, newCards[4].card_id), newCards[5].card_id );
+      let dotHash3 = cantorPair(newCards[6].card_id, newCards[7].card_id)
+      // This unique hash can be a quick reference to check if this random deck has been created before
+
+      // Before we insert this new value into the dabase, check if this random set is already in the database
+      // Create a query to check the database's hashed values
+      // Select all from the database for the purpose of verification, we need to check if this challenge has been created or not
+      const hashquery = `SELECT * FROM (SELECT * FROM (SELECT * FROM randchallenges WHERE dothash = ${dotHash}) AS hashone WHERE dothash2 = ${dotHash2}) AS hashtwo WHERE dothash3 = ${dotHash3}`;
+      // Query the db for this hash
+      return task.any(hashquery)
+      .then(data => {
+        // If there is a return from the DB, the random challenge already exists
+        if(data[0]) {
+          // Extract the challenge id
+          let challengeID = data[0].challenge_id;
+          // Create a log to compare the checked and in-db values to verify that my hashing algorithm works
+          if(newCards[0].card_id != data[0].card_id_1 && newCards[1].card_id != data[0].card_id_2 && newCards[2].card_id != data[0].card_id_3 && newCards[3].card_id != data[0].card_id_4 && newCards[4].card_id != data[0].card_id_5 && newCards[5].card_id != data[0].card_id_6 && newCards[7].card_id != data[0].card_id_8) {
+            console.log("Error: Two sets of cards prdouced the same hash!")
+            console.log("Newly picked cards: " + newCards[0].card_id + " " + newCards[1].card_id + " " + newCards[2].card_id + " " + newCards[3].card_id + " " + newCards[4].card_id + " " + newCards[5].card_id + " " + newCards[6].card_id + " " + newCards[7].card_id + ", Hash: " + dotHash + " " + dotHash2 + " " + dotHash3);
+            console.log("Cards being compared to: " + data[0].card_id_1 + " " + data[0].card_id_2 + " " + data[0].card_id_3 + " " + data[0].card_id_4 + " " + data[0].card_id_5 + " " + data[0].card_id_6 + " " + data[0].card_id_7 + " " + data[0].card_id_8 + ", Hash: " + data[0].dothash + " " + data[0].dothash2 + " " + data[0].dothash3);
+          }
+          // First, check if a user is logged in by checking the session
+          if(req.session.user && req.session.user != null) {
+            // Query the database for completion
+            return task.any(`SELECT * FROM (SELECT * FROM users_to_randoms WHERE user_id = ${req.session.user.user_id}) AS userchallenges WHERE challenge_id = ${data[0].challenge_id}`)
+            .then(data => {
+              // Check if anything is returned
+              if(data[0]) {
+                // Use the iscompleted boolean to verify if the challenge has been completed by the user
+                if(data[0].is_completed) {
+                  // TODO: If the challenge is completed, go back to the new random page. Not sure what the best way to handle this case would be
+                  res.redirect(`/random`)
+                } else {
+                  // If the challenge is not completed, redirect to the challenge page (They have not completed it yet!)
+                  res.redirect(`/random?randomid=${data[0].challenge_id}`)
+                }
+              } else {
+                // If no data is returned, this challenge has not been attempted. Redirect to the challenge page
+                res.redirect(`/random?randomid=${challengeID}`)
+              }
+            })
+          } else {
+            // If a user is not logged in, simply redirect to the challenge page
+            res.redirect(`/random?randomid=${data[0].challenge_id}`)
+          }
+        }
+        else {
+          // If the data is not found, we can proceed with the creation of a new challenge in the DB
+          
+          // Make an array of the costs for use
+          let costArray = [newCards[0].cost, newCards[1].cost, newCards[2].cost, newCards[3].cost, newCards[4].cost, newCards[5].cost, newCards[6].cost, newCards[7].cost];
+          // FIRST: Find the average cost of the cards that were returned
+          let newAvgCost = (costArray[0] + costArray[1] + costArray[2] + costArray[3] + costArray[4] + costArray[5] + costArray[6] + costArray[7]) / 8;
+          // SECOND: Find the 4 cycle value, the sum of the 4 cheapest cards in the deck
+          // Sort the cost array in ascending order and sum the smallest 4 values
+          costArray.sort((a,b)=>{return a-b});
+          // Sum the minimum 4 values
+          let newFourCycle = costArray[0] + costArray[1] + costArray[2] + costArray[3];
+
+          // Query to the database to make a new challenge
+          return task.any(`INSERT INTO randchallenges (challenge_name, average_cost, fourcycle, card_id_1, card_id_2, card_id_3, card_id_4, card_id_5, card_id_6, card_id_7, card_id_8, dothash, dothash2, dothash3) values ('Test Challenge', ${newAvgCost}, ${newFourCycle}, ${newCards[0].card_id}, ${newCards[1].card_id}, ${newCards[2].card_id}, ${newCards[3].card_id}, ${newCards[4].card_id}, ${newCards[5].card_id}, ${newCards[6].card_id}, ${newCards[7].card_id}, ${dotHash}, ${dotHash2}, ${dotHash3}) RETURNING challenge_id`)
+          .then(data => {
+            // With the insert hopefully successful, redirect the user to the page with the newly create challenge
+            // First, check if a user is logged in by checking the session
+            if(req.session.user && req.session.user != null) {
+              // Create an entry in the database to link the user and the challenge
+              return task.any(`INSERT INTO users_to_randoms (user_id, challenge_id, is_completed) values (${req.session.user.user_id}, ${data[0].challenge_id}, false) RETURNING challenge_id`)
+              .then(data => {
+                // With the user now linked to the challenge, we can send them to the challenge page
+                res.redirect(`/random?randomid=${data[0].challenge_id}`)
+              })
+            } else {
+              // If the user is not logged in, simply redirect them to the challenge page
+              res.redirect(`/random?randomid=${data[0].challenge_id}`)
+            }
+            
+          })
+        }
+        
+      })
+
+    })
+  })
+  .catch(error => {
+    // Log any errors to the console
+    console.log(error);
+    // Catch any errors relating to this database access and show a message on the page
+    res.render('pages/newrandom', {
+      error: true,
+      message: "Sorry, we could not process your request.",
+      isLoggedIn: false,
+    })
+  })
+
+})
 
 app.post('/bad', (req, res) => {
 

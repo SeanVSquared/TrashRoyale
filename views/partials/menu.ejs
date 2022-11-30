@@ -1,15 +1,37 @@
 <header>  
-    <% if(typeof username === 'undefined') { %>
+    
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="/home">TrashRoyale</a>
             <div  id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
                 </li>
                 </ul>
             </div>
+            <div  id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                  <a class="nav-link" href="/random">Random Deck<span class="sr-only">(current)</span></a>
+              </li>
+              </ul>
+          </div>
+          <div  id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/bad">Bad Deck<span class="sr-only">(current)</span></a>
+            </li>
+            </ul>
+        </div>
+        <div  id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+              <a class="nav-link" href="/cards">Cards<span class="sr-only">(current)</span></a>
+          </li>
+          </ul>
+      </div>
             <img src="/images/LogoTry2.png" alt="Italian Trulli" class="mx-auto" style="height: 50px">
+            <% if(typeof username === 'undefined') { %>
             <div>
                 <ul style="float: right;" class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -20,19 +42,8 @@
                 </li>
                 </ul>
             </div>
-        </nav>
-    <% } else { console.log(username) %>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/home">TrashRoyale</a>
-            <div  id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-                </li>
-                </ul>
-            </div>
-            <img src="/images/LogoTry2.png" alt="Italian Trulli" class="mx-auto" style="height: 50px">
-            <div>
+            <% } else { console.log(username) %>
+              <div>
                 <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,6 +56,6 @@
                 </li>
                 </ul>
             </div>
+            <% } %>
         </nav>
-    <% } %>
 </header>
