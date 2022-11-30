@@ -1,0 +1,27 @@
+Project Status:
+    All necessary features for minimum viable project are in progress. If time permits additional features will be added to project board.
+
+Sean:
+    Working on API for random card deck. Backend is almost done. Will be working on completing that throughout the week.
+
+    Tips: Make sure to test that features work when playing app on phone.
+
+Daniel:
+    Working on gathering data from Clash Royale API. Will create backend features that will show metrics about players performance.
+
+Tobey:
+    Working on bad deck API. Should be done after break. Currently in progress but will need to create front end to match it.
+
+    Tips: Make sure to not add too many features without creating minimum product. Make sure to frequently pull code from main to reecieve updates.
+
+Derek:
+    Working on creating Stats and leaderboards for Home. Currently working on the API and have a rough draft of the front end in progess.
+
+Nic:
+    Working on validating logins. This task is complete. Will begin working on unifying front-end to make it look cohesive.
+
+Nico:
+    Working on Account page. 
+
+    Tips: Is this is a necessary feture? 
+
