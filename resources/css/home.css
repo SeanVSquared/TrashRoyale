@@ -36,7 +36,7 @@ a:focus {
     overflow: hidden;
     position: relative;
     margin: 10px auto;
-    cursor: pointer;
+    cursor: default;
     display: inline-flex;
 }
 
@@ -120,10 +120,11 @@ a:focus {
 }
 
 .profileCard {
-    max-width: 40%;
+    max-width: 45%;
     position: absolute;
     box-shadow: 0px 0px 1px rgba(255, 255, 255, 0.2);
     left: 0;
+    cursor: default;
 }
 
 .card-title {
@@ -137,6 +138,9 @@ a:focus {
     border: 3px solid;
     width: fit-content;
     background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuTcRdpZFjUWuook0RdQkFeMps-bng0MbUSA&usqp=CAU');
+    background-repeat: no-repeat; 
+    background-size: cover;
+
 }
 
 .stat-body {
@@ -158,17 +162,17 @@ a:focus {
 .battlelog {
     position: absolute;
     color: rgba(255, 255, 255, 0.8);
-    width: 44%;
+    width: 54%;
     height: 88vh;
-    left: 55%;
+    left: 45%;
     border-radius: 5px;
     box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.2);
     overflow: auto;
     margin: 10px auto;
-    cursor: pointer;
+    cursor: default;
     background-image: url('https://i.imgur.com/m72NFZ7.png');
+    background-repeat: no-repeat; 
     background-size: cover;
-    background-size: 750px;
     padding: 39px;
 }
 
@@ -219,7 +223,7 @@ a:focus {
     box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.1);
     overflow: auto;
     margin: 10px auto;
-    cursor: pointer;
+    cursor: default;
     background-image: url('https://i.imgur.com/m72NFZ7.png');
     background-size: cover;
     background-size: 750px;
