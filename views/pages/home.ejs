@@ -1,47 +1,81 @@
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
-<main>
-    <div class="container-fluid">
-        <% if(typeof results === 'undefined') {  %>
-            <%- include ('../partials/message') %>
-        <% } else { %> 
+<main>  
+        <div>
+            <div class="container-fluid">
+                <% if(typeof results === 'undefined') {  %>
+                    <%- include ('../partials/message') %>
+                <% } else { %> 
 
-        <% let player = results; %>
-        <% let recentMatches = battlelog.data;
-           // console.log(recentMatches); %>
-        <%    let worstClan_members = worstClanInfo.data.memberList; %>
-        <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
-        <%  let profilePic = `<div class="profile-image"> 
+                <% let player = results; %>
+                <% let recentMatches = battlelog.data;
+                // console.log(recentMatches); %>
+                <%    let worstClan_members = worstClanInfo.data.memberList; %>
+                <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
+                <%  let profilePic = `<div class="profile-image"> 
 
-            <img src="${profileImg}" alt="">
+                    <img src="${profileImg}" alt="">
 
-        </div>`; %>
-        <div class="profileCard container-fluid">
-            <div class="profile-card-6"><img src="https://i.imgur.com/m72NFZ7.png" class="img img-responsive">
-                <div class="profile-name"><%= player.data.name %>
-                    <br><small><%= player.data.tag %></small>
-                    <br><small><%= player.data.arena.name %></small>
-                </div>
-                <div>
-                    <%- profilePic %>
-                </div>
-                <div class="profile-overview">
-                    <div class="profile-overview text-center">
-                        <div class="row text-center">
-                            <div class="col-sm-4">
-                                <h3><%= player.data.wins %></h3>
-                                <p>Wins</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h3><%= player.data.losses %></h3>
-                                <p>Losses</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h3><%= player.data.trophies %></h3>
-                                <p>Trophies</p>
+            </div>`; %>
+            <div class="profileCard container-fluid">
+                <div class="profile-card-6"><img src="https://i.imgur.com/m72NFZ7.png" class="img img-responsive">
+                    <div class="profile-name"><%= player.data.name %>
+                        <br><small><%= player.data.tag %></small>
+                        <br><small><%= player.data.arena.name %></small>
+                    </div>
+                    <div>
+                        <%- profilePic %>
+                    </div>
+                    <div class="profile-overview">
+                        <div class="profile-overview text-center">
+                            <div class="row text-center">
+                                <div class="col-sm-4">
+                                    <h3><%= player.data.wins %></h3>
+                                    <p>Wins</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h3><%= player.data.losses %></h3>
+                                    <p>Losses</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h3><%= player.data.trophies %></h3>
+                                    <p>Trophies</p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="container-fluid leaderboardCard" style="height: 430px"> 
+                    <h3 style="color: white; padding-top: .5em; font-weight: bolder; padding-bottom: 5px;">Leaderboard</h3>
+                    <div class="card border-dark mb-3" style="background: rgba(9, 0, 0, 0.3); height: 85%;" >
+                        <table class="table table-borderless" style="color: white;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Rank</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Challenges Completed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        <% let rankings = userRankings;
+                            let rank = 1;
+                            rankings.forEach(function(user) { //console.log(user); 
+                                %>
+                                        <tr>
+                                            <td scope="row"><%= rank %></td>
+                                            <td><%= user.username %></td>
+                                            <% if (user.challenges_completed != null) { %>
+                                            <td><%= user.challenges_completed %></td>
+                                            <% } else { %>
+                                            <td>0</td>
+                                            <% } %>
+                                        </tr>
+                            <%
+                            rank++;
+                            }) %>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
