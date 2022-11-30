@@ -646,102 +646,107 @@ app.use(auth);
 
 // GET Request for /home
 app.get('/home', async (req, res) => {
-    //console.log(req.session.user.api_key);
-    //console.log(req.session.user.tag);
-    const clashTag = req.session.user.tag;
-    console.log(clashTag);
-    //const clashTag = '#LJV98808';
-    const tag = clashTag.replace('#', '%23');
-
-
-    const battlelog = await axios({
-        
-        url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,
-            method: 'get',
-            dataType:'json',
-            headers: {
-                "Authorization": `Bearer ${process.env.API_KEY}`,
-            }
-        })
-        .catch(error => { //If there is an error here it most likely will be with the tag registered in the users account so it sends the appropriate message
-            console.log(error);
-            res.render('pages/home', {
-                message: 'Not able to find player with your clash royale tag. Please check your tag and change it if needed in account page', 
-                username: req.session.user.username,
-                css: "home.css",
-            })
-        })
-
-        const clanRankings = await axios({
-        
-            url: `https://api.clashroyale.com/v1/locations/57000006/rankings/clans`,
-                method: 'get',
-                dataType:'json',
-                headers: {
-                    // Bearer apikey
-                    "Authorization": `Bearer ${process.env.API_KEY}`,
-                    // `Bearer ${req.session.user.api_key} does not work
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
-                    message: 'Error with retrieving clan rankings', 
-                })
-            })
-
-        
-            var worstClan = clanRankings.data.items[998];
-            var worstClanTag = worstClan.tag.replace('#', '%23');
-        
-            const worstClanInfo = await axios({
-        
-            url: `https://api.clashroyale.com/v1/clans/${worstClanTag}`,
+  //console.log(req.session.user.api_key);
+  //console.log(req.session.user.tag);
+  const clashTag = req.session.user.tag;
+  console.log(clashTag);
+  //const clashTag = '#LJV98808';
+  const tag = clashTag.replace('#', '%23');
+  let usersRankedQuery = `SELECT username, SUM(daily_challenges_completed + random_challenges_completed) as challenges_completed FROM users
+                        GROUP BY user_id
+                        ORDER BY SUM(daily_challenges_completed + random_challenges_completed);`
+  const query = `SELECT daily_challenges_completed FROM users;`;
+  let userRankings = await db.any(usersRankedQuery);
+  
+  
+  axios({
+      
+      url: `https://api.clashroyale.com/v1/players/${tag}`,
+          method: 'get',
+          dataType:'json',
+          headers: {
+              "Authorization": `Bearer ${process.env.API_KEY}`,
+              
+          }
+      })
+      .then(async (results) => {
+          //console.log(results); // the results will be displayed on the terminal if the docker containers are running
+          const battlelog = await axios({
+      
+            url: `https://api.clashroyale.com/v1/players/${tag}/battlelog`,
                 method: 'get',
                 dataType:'json',
                 headers: {
                     "Authorization": `Bearer ${process.env.API_KEY}`,
                 }
             })
-            .catch(error => {
-                console.log(error);
-                res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
-                    message: 'Error retrieving clan rankings info', 
+            .catch(error => { //If there is an error here it most likely will be with the tag registered in the users account so it sends the appropriate message
+                res.render('pages/home', {
+                    error: error,
+                    message: 'Not able to find player with your clash royale tag. Please check your tag and change it if needed in account page', 
+                    username: req.session.user.username,
+                    css: "home.css",
                 })
             })
     
+            const clanRankings = await axios({
+            
+                url: `https://api.clashroyale.com/v1/locations/57000006/rankings/clans`,
+                    method: 'get',
+                    dataType:'json',
+                    headers: {
+                        // Bearer apikey
+                        "Authorization": `Bearer ${process.env.API_KEY}`,
+                        // `Bearer ${req.session.user.api_key} does not work
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
+                        message: 'Error with retrieving clan rankings', 
+                    })
+                })
     
-    axios({
-        
-        url: `https://api.clashroyale.com/v1/players/${tag}`,
-            method: 'get',
-            dataType:'json',
-            headers: {
-                "Authorization": `Bearer ${process.env.API_KEY}`,
-                
-            }
-        })
-        .then(results => {
-            //console.log(results); // the results will be displayed on the terminal if the docker containers are running
-            res.render('pages/home', {
-                results: results,
-                battlelog: battlelog,
-                clanRankings: clanRankings,
-                worstClanInfo: worstClanInfo,
-                username: req.session.user.username,
-                title: "Home",
-                css: "home.css",
-            });
-        })
-        .catch(error => { //an error could occur if the incorrect clash royale tag is associated with the account so the eroor message reflects that
-            // Handle errors
-            //console.log(error);
-            res.render('pages/home', {
-                message: 'Uh Oh looks like something went wrong with your tag (please check your clash royale user tag and make changes if needed)',
-                username: req.session.user.username,
-                css: "home.css",
-            })
-        })
+            
+                var worstClan = clanRankings.data.items[998];
+                var worstClanTag = worstClan.tag.replace('#', '%23');
+            
+                const worstClanInfo = await axios({
+            
+                url: `https://api.clashroyale.com/v1/clans/${worstClanTag}`,
+                    method: 'get',
+                    dataType:'json',
+                    headers: {
+                        "Authorization": `Bearer ${process.env.API_KEY}`,
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    res.render('pages/home', { //Error should not happen here unless api_key is not valid so should not really have to worry about this
+                        message: 'Error retrieving clan rankings info', 
+                    })
+                })
+          res.render('pages/home', {
+              results: results,
+              battlelog: battlelog,
+              userRankings: userRankings,
+              clanRankings: clanRankings,
+              worstClanInfo: worstClanInfo,
+              username: req.session.user.username,
+              title: "Home",
+              css: "home.css",
+          });
+      })
+      .catch(error => { //an error could occur if the incorrect clash royale tag is associated with the account so the erorr message reflects that
+          // Handle errors
+          //console.log(error);
+          res.render('pages/home', {
+              error: error,
+              message: error.response.data.message,
+              username: req.session.user.username,
+              css: "home.css",
+          })
+      })
 
 });
 

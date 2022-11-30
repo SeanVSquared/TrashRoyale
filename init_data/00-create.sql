@@ -109,7 +109,6 @@ CREATE TABLE IF NOT EXISTS cards(
   -- Data Fields from API
   card_id SERIAL PRIMARY KEY,
   card_name VARCHAR(60) UNIQUE NOT NULL,
-  clash_id INT,
   max_level SMALLINT,
   cost SMALLINT,
   -- Calculated Data
@@ -128,7 +127,7 @@ CREATE TABLE IF NOT EXISTS attributes(
 
 -- cards to attributes
 CREATE TABLE IF NOT EXISTS cards_to_attributes(
-  atribute_name SMALLINT,
-  card_name SMALLINT
+  atribute_id SMALLINT,
+  card_id SMALLINT
 );
 
