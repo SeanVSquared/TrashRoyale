@@ -237,9 +237,10 @@ app.get('/random', async (req, res) => {
               // TODO handle bad cases for battlelog
               // Get the recent matches for this player
               let recentMatches = battlelog.data;
-              // Loop through each match to check if the correct cards were used
 
+              // Loop through each match to check if the correct cards were used
               recentMatches.forEach(match => {
+                console.log("Checking a Match");
                 // Pull the cards played
                 let cards = match.team[0].cards;
                 // Create a vector of the card IDs from the match data
@@ -258,6 +259,7 @@ app.get('/random', async (req, res) => {
                     // Query the database
                     return task.any(hashquery)
                     .then(data => {
+                      console.log("MATCH found for a deck!")
                       // If there is a return to the data, we have a match in the database!
                       if(data[0]) {
                         // Check if the player won
@@ -266,6 +268,7 @@ app.get('/random', async (req, res) => {
                         if(match.team[0].crowns == match.opponent[0].crowns) {
                             win = false;
                         } else if (match.team[0].crowns > match.opponent[0].crowns) {
+                          console.log("THEY WON!")
                             win = true;
                         } else {
                             win = false;
@@ -274,6 +277,7 @@ app.get('/random', async (req, res) => {
                           // If the player won the challenge, we need to mark it as complete and update their total
                           return task.any(`UPDATE users_to_randoms SET is_completed = true WHERE (user_id = ${req.session.user.user_id} AND challenge_id = ${challenge_id})`)
                           .then(data => {
+                            console.log("They won so attempting to increment the challenges completed")
                             // Increment the count on this user's table
                             incrementUserChallengesCompleted(req.session.user.user_id);
                             // Close the task
