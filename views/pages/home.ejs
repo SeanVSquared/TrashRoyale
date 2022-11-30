@@ -81,6 +81,7 @@
         </div>
 
         <div class="container-fluid">
+<<<<<<< HEAD
             <div class="battlelog" style="background: rgba(68, 68, 68, 0.28); ">
                 <section class="card mb-3 sticky-top-md">
                     <div class="card-body">
@@ -103,13 +104,14 @@
                     }
                     %>
                     
-                <section class="card mb-3 sticky-md">
+                <section class="mb-3 sticky-md">
                     <div class="card-body">
-                        <h4 style="display: inline-block;"><b><%= match.type %></b></h4>
+                        <h4 style="display: inline-block;" class="battlelog-game-type"><b><%= match.type %></b></h4>
+
                         <% if(win == true) { %>
-                            <p style="color: green; position: relative; display: inline-block; padding-left: 1em;">Win</p>
+                            <p style="color: green; position: relative; display: inline-block; padding-left: 1em; font-weight: bold; font-size: large;">Win</p>
                         <% } else { %>
-                            <p style="color: red; position: relative; display: inline-block; padding-left: 1em;">Loss</p>
+                            <p style="color: red; position: relative; display: inline-block; padding-left: 1em; font-weight: bold; font-size: large;">Loss</p>
                         <% } %>
                         <br>
                         <br>

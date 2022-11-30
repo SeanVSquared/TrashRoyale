@@ -110,23 +110,50 @@ a:focus {
 }
 
 .profileCard {
-    max-width: 50%;
+
+    max-width: 40%;
     position: absolute;
+    box-shadow: 0px 0px 1px rgba(255, 255, 255, 0.2);
     left: 0;
+}
+
+.card-title {
+    font-size: xx-large;
+    font-weight: bolder;
+    text-align: center;
+    color: rgb(240, 240, 240);
+}
+
+.card-body {
+    border: 3px solid;
+    width: fit-content;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuTcRdpZFjUWuook0RdQkFeMps-bng0MbUSA&usqp=CAU');
+}
+.battlelog-game-type {
+    font-weight: bolder;
+}
+.battlelog-deck {
+    padding: 0px;
+    border: 1px solid;
 }
 
 .battlelog {
     position: absolute;
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.8);
     width: 44%;
     height: 88vh;
     left: 55%;
     border-radius: 5px;
-    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.2);
     overflow: auto;
     margin: 10px auto;
     cursor: pointer;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    background-size: cover;
+    background-size: 750px;
+    padding: 39px;
 }
+
 
 .leaderboardCard {
     position: absolute;
@@ -151,7 +178,73 @@ a:focus {
 }
 
 
+.random-deck {
+    padding: 0px;
+    border: 5px solid;
+}
 
+.random-deck-image {
+    float: left;
+    width:  130px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.random-deck-card-button {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.random-deck-card {
+    color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    height: 95%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.3);
+    overflow: auto;
+    margin: 10px auto;
+    cursor: pointer;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    background-size: cover;
+    background-size: 750px;
+    padding: 10px;
+    padding-top: 15px;
+}
+
+.random-row {
+    padding-right: 35px;
+    padding-top: 35px;
+}
+
+.random-deck-stats {
+    color: rgba(255, 255, 255, 0.8);
+    width: 80%;
+    height: 95%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.1);
+    overflow: auto;
+    margin: 10px auto;
+    cursor: pointer;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    background-size: cover;
+    background-size: 750px;
+    padding: 20px;
+    padding-top: 15px;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+    padding-right: 30px;
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
 /* .row{
     width: 100% !important;
     margin: none !important;
