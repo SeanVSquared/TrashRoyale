@@ -1,0 +1,10 @@
+Week 4 release notes:
+
+Front End:
+    update for home-page. (Theme matches clash royale and matches other pages.)
+    addition for home-page. (Added leaderboard card)
+    update for randome-page. (Re structuring of front end logic and theme.)
+    Created bad deck page. (new page that displays bad-decks to challenge users.)
+Back End:
+    random-page. (Finish setting up API calls for retrieving and creating random decks)
+    bad-deck-page. (Finished setting up API for creating bad decks based off user data.)
