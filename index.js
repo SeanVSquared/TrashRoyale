@@ -130,8 +130,8 @@ app.post('/register', async (req, res) => {
   //console.log(clash_tag)
   const hash = await bcrypt.hash(req.body.password, 10);
   //console.log(hash)
-  const query = `INSERT INTO users (username, email, clash_tag, password, random_challenges_completed)
-  values ($1, $2, $3, $4, 0);`
+  const query = `INSERT INTO users (username, email, clash_tag, password, random_challenges_completed, daily_challenges_completed)
+  values ($1, $2, $3, $4, 5, 5);`
   
   db.any(query, [
       username, email, clash_tag,
@@ -421,6 +421,11 @@ app.get('/home', async (req, res) => {
     console.log(clashTag);
     //const clashTag = '#LJV98808';
     const tag = clashTag.replace('#', '%23');
+    let usersRankedQuery = `SELECT username, SUM(daily_challenges_completed + random_challenges_completed) as challenges_completed FROM users
+                          GROUP BY user_id
+                          ORDER BY SUM(daily_challenges_completed + random_challenges_completed);`
+    const query = `SELECT daily_challenges_completed FROM users;`;
+    let userRankings = await db.any(usersRankedQuery);
     
     
     axios({
@@ -493,6 +498,7 @@ app.get('/home', async (req, res) => {
             res.render('pages/home', {
                 results: results,
                 battlelog: battlelog,
+                userRankings: userRankings,
                 clanRankings: clanRankings,
                 worstClanInfo: worstClanInfo,
                 username: req.session.user.username,

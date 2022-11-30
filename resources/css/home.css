@@ -27,7 +27,7 @@ a:focus {
     position: relative;
     margin: 10px auto;
     cursor: pointer;
-    display: inline-flex;
+    display: flex;
 }
 
 .profile-card-6 img {
@@ -110,7 +110,7 @@ a:focus {
 }
 
 .profileCard {
-    max-width: 55%;
+    max-width: 50%;
     position: absolute;
     left: 0;
 }
@@ -127,6 +127,30 @@ a:focus {
     margin: 10px auto;
     cursor: pointer;
 }
+
+.leaderboardCard {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.2);
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    margin-top: 28.5%;
+    max-width: 53.5%;
+    height: 40vh;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-size: cover;
+}
+
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
+}
+
+
 
 /* .row{
     width: 100% !important;
