@@ -128,12 +128,21 @@ a:focus {
     width: fit-content;
     background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuTcRdpZFjUWuook0RdQkFeMps-bng0MbUSA&usqp=CAU');
 }
+
+.stat-body {
+    border: 1px solid;
+    border-radius: 2px;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    border-color:aliceblue;
+}
 .battlelog-game-type {
     font-weight: bolder;
 }
 .battlelog-deck {
-    padding: 0px;
     border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 30px;
+    background:rgba(255, 255, 255, 0.1);
 }
 
 .battlelog {
