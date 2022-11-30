@@ -80,6 +80,7 @@
                 </div>
             </div>
         </div>
+
         <div class="container-fluid">
             <div class="battlelog">
                 <h4 class="card-title">Recent Battles</h4>
@@ -100,7 +101,7 @@
                     console.log(winCountBefore); %>
                     
                 <section class="mb-3 sticky-md">
-                    <div class="card-body">
+                    <div class="card-body" style="width: 100%;">
                         <h4 style="display: inline-block;" class="battlelog-game-type"><%= match.type %> </h4>
                         <% if(win == true) { %>
                             <p style="color: green; position: relative; display: inline-block; padding-left: 1em; font-weight: bold; font-size: large;">Win</p>
