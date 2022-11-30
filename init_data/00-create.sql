@@ -47,7 +47,10 @@ CREATE TABLE IF NOT EXISTS randchallenges(
   card_id_5 SMALLINT,
   card_id_6 SMALLINT,
   card_id_7 SMALLINT,
-  card_id_8 SMALLINT
+  card_id_8 SMALLINT,
+  dothash BIGINT,
+  dothash2 BIGINT,
+  dothash3 BIGINT
 );
 
 -- create a new table to store DAILY challenges that have been given out
@@ -71,6 +74,27 @@ CREATE TABLE IF NOT EXISTS dailychallenges(
   challenge_date DATE
 );
 
+-- create table to story BAD challenges that have been created
+-- stroe the name of the BAD challenge deck
+-- store the average cost of the BAD challenge deck
+-- store the fourcycle cost of the BAD challenge deck
+-- store the ID of the 8 cards in the deck for the clash royale API calls
+
+CREATE TABLE IF NOT EXISTS badchallenges(
+  challenge_id SERIAL PRIMARY KEY,
+  challenge_name VARCHAR(60),
+  average_cost REAL,
+  fourcycle REAL,
+  card_id_1 SMALLINT,
+  card_id_2 SMALLINT,
+  card_id_3 SMALLINT,
+  card_id_4 SMALLINT,
+  card_id_5 SMALLINT,
+  card_id_6 SMALLINT,
+  card_id_7 SMALLINT,
+  card_id_8 SMALLINT
+);
+
 -- create a new table to convert from a user's serial ID to the challenge ID based on
 -- if they have seen the challenge or completed it (RANDOM)
 CREATE TABLE IF NOT EXISTS users_to_randoms(
@@ -85,7 +109,6 @@ CREATE TABLE IF NOT EXISTS cards(
   -- Data Fields from API
   card_id SERIAL PRIMARY KEY,
   card_name VARCHAR(60) UNIQUE NOT NULL,
-  clash_id INT,
   max_level SMALLINT,
   cost SMALLINT,
   -- Calculated Data
@@ -104,7 +127,7 @@ CREATE TABLE IF NOT EXISTS attributes(
 
 -- cards to attributes
 CREATE TABLE IF NOT EXISTS cards_to_attributes(
-  atribute_name SMALLINT,
-  card_name SMALLINT
+  atribute_id SMALLINT,
+  card_id SMALLINT
 );
 

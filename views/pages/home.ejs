@@ -1,58 +1,89 @@
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
-<main>
-    <div class="container-fluid">
-        <% if(typeof results === 'undefined') {  %>
-            <%- include ('../partials/message') %>
-        <% } else { %> 
+<main>  
+        <div>
+            <div class="container-fluid">
+                <% if(typeof results === 'undefined') {  %>
+                    <%- include ('../partials/message') %>
+                <% } else { %> 
 
-        <% let player = results; %>
-        <% let recentMatches = battlelog.data;
-           // console.log(recentMatches); %>
-        <%    let worstClan_members = worstClanInfo.data.memberList; %>
-        <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
-        <%  let profilePic = `<div class="profile-image"> 
+                <% let player = results; %>
+                <% let recentMatches = battlelog.data;
+                // console.log(recentMatches); %>
+                <%    let worstClan_members = worstClanInfo.data.memberList; %>
+                <%   let profileImg = player.data.currentFavouriteCard.iconUrls.medium; %>
+                <%  let profilePic = `<div class="profile-image"> 
 
-            <img src="${profileImg}" alt="">
+                    <img src="${profileImg}" alt="">
 
-        </div>`; %>
-        <div class="profileCard container-fluid">
-            <div class="profile-card-6"><img src="https://i.imgur.com/m72NFZ7.png" class="img img-responsive">
-                <div class="profile-name"><%= player.data.name %>
-                    <br><small><%= player.data.tag %></small>
-                    <br><small><%= player.data.arena.name %></small>
-                </div>
-                <div>
-                    <%- profilePic %>
-                </div>
-                <div class="profile-overview">
-                    <div class="profile-overview text-center">
-                        <div class="row text-center">
-                            <div class="col-sm-4">
-                                <h3><%= player.data.wins %></h3>
-                                <p>Wins</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h3><%= player.data.losses %></h3>
-                                <p>Losses</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h3><%= player.data.trophies %></h3>
-                                <p>Trophies</p>
+            </div>`; %>
+            <div class="profileCard container-fluid">
+                <div class="profile-card-6"><img src="https://i.imgur.com/m72NFZ7.png" class="img img-responsive">
+                    <div class="profile-name"><%= player.data.name %>
+                        <br><small><%= player.data.tag %></small>
+                        <br><small><%= player.data.arena.name %></small>
+                    </div>
+                    <div>
+                        <%- profilePic %>
+                    </div>
+                    <div class="profile-overview">
+                        <div class="profile-overview text-center">
+                            <div class="row text-center">
+                                <div class="col-sm-4">
+                                    <h3><%= player.data.wins %></h3>
+                                    <p>Wins</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h3><%= player.data.losses %></h3>
+                                    <p>Losses</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h3><%= player.data.trophies %></h3>
+                                    <p>Trophies</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="container-fluid leaderboardCard" style="height: 430px"> 
+                    <h3 style="color: white; padding-top: .5em; font-weight: bolder; padding-bottom: 5px;">Leaderboard</h3>
+                    <div class="card border-dark mb-3" style="background: rgba(9, 0, 0, 0.3); height: 85%;" >
+                        <table class="table table-borderless" style="color: white;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Rank</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Challenges Completed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        <% let rankings = userRankings;
+                            let rank = 1;
+                            rankings.forEach(function(user) { //console.log(user); 
+                                %>
+                                        <tr>
+                                            <td scope="row"><%= rank %></td>
+                                            <td><%= user.username %></td>
+                                            <% if (user.challenges_completed != null) { %>
+                                            <td><%= user.challenges_completed %></td>
+                                            <% } else { %>
+                                            <td>0</td>
+                                            <% } %>
+                                        </tr>
+                            <%
+                            rank++;
+                            }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="container-fluid">
-            <div class="battlelog" style="background: rgba(68, 68, 68, 0.28); ">
-                <section class="card mb-3 sticky-top-md">
-                    <div class="card-body">
-                        <h4 class="card-title">Most Recent Battles</h4>
-                    </div>
-                </section>
+            <div class="battlelog">
+                <h4 class="card-title">Recent Battles</h4>
                 <% recentMatches.forEach(function(match) { //console.log(match); 
                     let carouselButtonIDCnt = 0;
                     carouselButtonIDCnt++;
@@ -69,16 +100,39 @@
                     }
                     console.log(winCountBefore); %>
                     
-                <section class="card mb-3 sticky-md">
-                    <div class="card-body">
-                        <h4 style="display: inline-block;"><%= match.type %> </h4>
+                <section class="mb-3 sticky-md">
+                    <div class="card-body" style="width: 100%;">
+                        <h4 style="display: inline-block;" class="battlelog-game-type"><%= match.type %> </h4>
                         <% if(win == true) { %>
-                            <p style="color: green; position: relative; display: inline-block; padding-left: 1em;">Win</p>
+                            <p style="color: green; position: relative; display: inline-block; padding-left: 1em; font-weight: bold; font-size: large;">Win</p>
                         <% } else { %>
-                            <p style="color: red; position: relative; display: inline-block; padding-left: 1em;">Loss</p>
+                            <p style="color: red; position: relative; display: inline-block; padding-left: 1em; font-weight: bold; font-size: large;">Loss</p>
                         <% } %>
-                        <h5 style="margin-top: 1em;">&ensp;Deck</h5>
-                        <div  style="padding: 0.5em 0.5em 0.5em 0.5em; background:rgba(68, 68, 68, 0.05); border-radius: 30px; width: 100%;" id="carouselControls" class="carousel slide" data-ride="carousel">
+                        <table class="table table-borderless">
+                            <h5 style="margin-top: 1em; padding-bottom: 5px;">Stats</h5>
+                            <thead>
+                            </thead>
+                            <tbody class="battlelog-deck">
+                                <tr style="color: rgba(24, 200, 1, 0.8);">
+                                    <td scope="row">Crowns</td>
+                                    <td><%= match.team[0].crowns %></td>
+                                </tr>
+                                <tr style="color: rgba(24, 200, 1, 0.8);">
+                                    <td scope="row">King Tower Hit Points</td>
+                                    <td><%= match.team[0].kingTowerHitPoints %> </td>
+                                </tr>
+                                <tr style="color: rgba(255, 0, 0, 0.8);">
+                                    <td scope="row">Opponent Crowns</td>
+                                    <td><%= match.opponent[0].crowns %></td>
+                                </tr>
+                                <tr style="color: rgba(255, 0, 0, 0.8);">
+                                    <td scope="row">Opponent King Tower Hit Points</td>
+                                    <td><%= match.opponent[0].kingTowerHitPoints %></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 style="margin-top: 1em; padding-bottom: 5px;">&ensp;Deck</h5>
+                        <div  style="padding: 0.3em 0.3em 0.3em 0.3em;" id="carouselControls" class="battlelog-deck carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
                                 <% let count = 0; %>
                                     <div  class="container">
@@ -93,44 +147,44 @@
                                             <% } else { %> 
                                                 <div class="carousel-item">
                                             <% } %>
-                                                <div class="row">
-                                                    <div style="margin-left: 1em;" class="col-sm">
+                                                    <div class="row">
+                                                        <div style="margin-left: 1em;" class="col-sm">
 
-                                                        <%- cardImg1 %>
+                                                            <%- cardImg1 %>
 
-                                                    </div>
-                                                    <div style="margin-left: 1em;" class="col-sm">
-                                                        
-                                                        <%- cardImg2 %>
-                                        
-                                                    </div>
-                                                    <div style="margin-left: 1em;" class="col-sm">
-
-                                                        <%- cardImg3 %>
-                                                    
-                                                    </div>
-                                                    <div style="margin-left: 1em;" class="col-sm">
-                                                
-                                                        <%- cardImg4 %>
+                                                        </div>
+                                                        <div style="margin-left: 1em;" class="col-sm">
                                                             
+                                                            <%- cardImg2 %>
+                                            
+                                                        </div>
+                                                        <div style="margin-left: 1em;" class="col-sm">
+
+                                                            <%- cardImg3 %>
+                                                        
+                                                        </div>
+                                                        <div style="margin-left: 1em;" class="col-sm">
+                                                    
+                                                            <%- cardImg4 %>
+                                                                
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                <% } %>  
-                        </div>
-                    </div>
-                            <!-- <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a> -->
-                        </div>
-                    </div>
-                </section>
-                <% }); %>
+                                            <% } %>  
+                                                </div>
+                                    </div>
+                                            <!-- <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a> -->
+                                        </div>
+                                    </div>
+                                </section>
+                                <% }); %>
             </div>
         </div>
     </div>

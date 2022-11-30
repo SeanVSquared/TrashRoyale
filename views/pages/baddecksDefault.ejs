@@ -1,0 +1,26 @@
+<!-- Include header and menu partials -->
+<%- include ('../partials/header') %>
+  <%- include ('../partials/menu') %>
+
+    <main>
+      <div class="container-fluid">
+
+        <!-- Message div -->
+        <div class="col">
+          <%- include ('../partials/message') %>
+        </div>
+
+        <!-- Form control to create a new random challenge. This will make a post request to random -->
+        <p>Are you lost????</p>
+        <p>Heres what you can do:</p>
+        <p>DEFAULT BAD DECK PAGE GUYS, ADD SOME BUTTONS TO GET NEW BAD CHALLENGE</p>
+
+        <form action="/bad" method="POST">
+          <button type="submit" class="btn btn-primary">Random Bad</button>
+        </form>
+
+      </div>
+    </main>
+
+    <!-- Include footer partials -->
+    <%- include ('../partials/footer') %>

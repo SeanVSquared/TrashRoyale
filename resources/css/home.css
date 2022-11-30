@@ -18,6 +18,16 @@ a:focus {
     color: inherit;
 } */
 
+.leaderboardCard {
+    background-color: rgba(255, 255, 255, 0.1);
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    max-width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(249, 249, 249, 0.3);
+    overflow: hidden;
+    background-size: cover;
+}
 
 .profile-card-6 {
     background-color: #FFF;
@@ -26,7 +36,7 @@ a:focus {
     overflow: hidden;
     position: relative;
     margin: 10px auto;
-    cursor: pointer;
+    cursor: default;
     display: inline-flex;
 }
 
@@ -110,24 +120,145 @@ a:focus {
 }
 
 .profileCard {
-    max-width: 55%;
+    max-width: 45%;
     position: absolute;
+    box-shadow: 0px 0px 1px rgba(255, 255, 255, 0.2);
     left: 0;
+    cursor: default;
+}
+
+.card-title {
+    font-size: xx-large;
+    font-weight: bolder;
+    text-align: center;
+    color: rgb(240, 240, 240);
+}
+
+.card-body {
+    border: 3px solid;
+    width: fit-content;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuTcRdpZFjUWuook0RdQkFeMps-bng0MbUSA&usqp=CAU');
+    background-repeat: no-repeat; 
+    background-size: cover;
+
+}
+
+.stat-body {
+    border: 1px solid;
+    border-radius: 2px;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    border-color:aliceblue;
+}
+.battlelog-game-type {
+    font-weight: bolder;
+}
+.battlelog-deck {
+    border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 30px;
+    background:rgba(255, 255, 255, 0.1);
 }
 
 .battlelog {
     position: absolute;
-    color: rgba(0, 0, 0, 0.8);
-    width: 44%;
+    color: rgba(255, 255, 255, 0.8);
+    width: 54%;
     height: 88vh;
-    left: 55%;
+    left: 45%;
     border-radius: 5px;
-    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.2);
+    overflow: auto;
+    margin: 10px auto;
+    cursor: default;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    background-repeat: no-repeat; 
+    background-size: cover;
+    padding: 39px;
+}
+
+.random-deck {
+    padding: 0px;
+    border: 5px solid;
+}
+
+.random-deck-image {
+    float: left;
+    width:  130px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.random-deck-card-button {
+    padding: 0;
+    border: none;
+    background: none;
+    padding-left: 20px;
+    padding-top: 5px;
+}
+
+.random-deck-card {
+    color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    height: 95%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.3);
     overflow: auto;
     margin: 10px auto;
     cursor: pointer;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    background-size: cover;
+    background-size: 750px;
+    padding: 10px;
+    padding-top: 15px;
 }
 
+.random-row {
+    padding-right: 35px;
+    padding-top: 35px;
+}
+
+.random-row {
+    padding-right: 5px;
+    padding-top: 5px;
+}
+
+.ramdom-table-head {
+    font-size: 30px;
+    padding-right: 20px;
+    padding-bottom: 15px;
+    font-weight: bold;
+
+}
+
+
+.random-deck-stats {
+    color: rgba(255, 255, 255, 0.8);
+    width: 80%;
+    height: 95%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.3);
+    overflow: auto;
+    margin: 10px auto;
+    cursor: default;
+    background-image: url('https://i.imgur.com/m72NFZ7.png');
+    background-size: cover;
+    background-size: 750px;
+    padding: 20px;
+    padding-top: 15px;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+    padding-right: 30px;
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
 /* .row{
     width: 100% !important;
     margin: none !important;
