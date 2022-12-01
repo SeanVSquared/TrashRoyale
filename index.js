@@ -760,14 +760,14 @@ app.get('/account', (req, res) => {
   // Render the ACCOUNT page
   console.log("attempting to render page account");
   res.render('pages/account', 
-    {username: req.session.user.username,
-    daily_challenges_completed: req.session.user.numChallengesCompleted,
-    user_id: req.session.user.user_id,
-    email: req.session.user.email,
-    clash_tag: req.session.user.clash_tag,
-    current_streak: req.session.user.current_streak,
-    max_streak: req.session.user.max_streak,
-    random_challenges_completed: req.session.user.random_challenges_completed
+    {username: req.session.user[0].username,
+    daily_challenges_completed: req.session.user[0].numChallengesCompleted,
+    user_id: req.session.user[0].user_id,
+    email: req.session.user[0].email,
+    clash_tag: req.session.user[0].clash_tag,
+    current_streak: req.session.user[0].current_streak,
+    max_streak: req.session.user[0].max_streak,
+    random_challenges_completed: req.session.user[0].random_challenges_completed
   });
 });
 
