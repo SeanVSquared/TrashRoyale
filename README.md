@@ -19,8 +19,10 @@ Technology Stack used for the project:
   - Docker
 
 Prerequisites to run the application:
-  - N/A
+  - Must submit public IP address to clash royale API webiste
 
 Instructions on how to run the application locally:
+  - register IP address with clash royale API.
   - Run docker compose up
   - View app on Localhost port 3000
+  - enter clash royale ID and register for an account.
