@@ -97,7 +97,8 @@ app.post('/login', async (req, res) => {
             current_streak: user[0].current_streak,
             max_streak: user[0].max_streak,
             daily_challenges_completed: user[0].daily_challenges_completed,
-            random_challenges_completed: user[0].random_challenges_completed
+            random_challenges_completed: user[0].random_challenges_completed,
+            bad_challenges_completed: user[0].bad_challenges_completed
             
         }
           req.session.save();
@@ -404,13 +405,15 @@ app.get('/random', async (req, res) => {
         // Handle Errors
         console.log(error)
         res.render('pages/newrandom', {
-          isLoggedIn: false
+          isLoggedIn: false,
+          css: "home.css"
         })
       });
     } else {
       // If a challenge ID was not provided, or was given as null, render the page to create a new random challenge without an error
     res.render('pages/newrandom', {
-      isLoggedIn: false
+      isLoggedIn: false,
+      css: "home.css"
     });
     }
   }
@@ -799,12 +802,14 @@ app.get('/bad', async (req, res) => {
         .catch(error => {
           console.log(error)
           res.render('pages/baddecksDefault', {
-            isLoggedIn: false
+            isLoggedIn: false,
+            css: "home.css"
           })
         });
     } else {
       res.render('pages/baddecksDefault', {
-        isLoggedIn: false
+        isLoggedIn: false,
+        css: "home.css"
       });
     }
   }
@@ -864,9 +869,9 @@ app.get('/home', async (req, res) => {
   const clashTag = req.session.user.tag;
   //console.log(clashTag);
   const tag = clashTag.replace('#', '%23');
-  let usersRankedQuery = `SELECT username, SUM(daily_challenges_completed + random_challenges_completed) as challenges_completed FROM users
+  let usersRankedQuery = `SELECT username, SUM(random_challenges_completed + bad_challenges_completed) as challenges_completed FROM users
                         GROUP BY user_id
-                        ORDER BY SUM(daily_challenges_completed + random_challenges_completed);`
+                        ORDER BY SUM(random_challenges_completed + bad_challenges_completed);`
   const query = `SELECT daily_challenges_completed FROM users;`;
   let userRankings = await db.any(usersRankedQuery);
   
@@ -938,6 +943,7 @@ app.get('/home', async (req, res) => {
                         message: 'Error retrieving clan rankings info', 
                     })
                 })
+                console.log(userRankings);
           res.render('pages/home', {
               results: results,
               battlelog: battlelog,
@@ -976,10 +982,9 @@ app.get('/account', (req, res) => {
     daily_challenges_completed: req.session.user.numChallengesCompleted,
     user_id: req.session.user.user_id,
     email: req.session.user.email,
-    clash_tag: req.session.user.clash_tag,
+    clash_tag: req.session.user.tag,
     current_streak: req.session.user.current_streak,
-    max_streak: req.session.user.max_streak,
-    random_challenges_completed: req.session.user.random_challenges_completed
+    max_streak: req.session.user.max_streak
   });
 });
 
