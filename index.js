@@ -587,7 +587,8 @@ app.get('/bad', async (req, res) => {
                                         message: "A challenge of this ID does not exist.",
                                         username: req.session.use.username,
                                         isLoggedIn: true,
-                                        numBadChallengesCompleted: numBadChallengesCompleted
+                                        numBadChallengesCompleted: numBadChallengesCompleted,
+                                        css: "home.css",
                                     })
                                 })
                         } else {
@@ -595,7 +596,8 @@ app.get('/bad', async (req, res) => {
                             res.render('pages/baddecksDefault', {
                                 error: true,
                                 message: "A challenge of this ID does not exist.",
-                                isLoggedIn: false
+                                isLoggedIn: false,
+                                css: "home.css",
                             })
                         }
 
@@ -613,7 +615,8 @@ app.get('/bad', async (req, res) => {
                                 if (!data[0]) {
                                     res.render('pages/baddecksDefault', {
                                         error: true,
-                                        message: "The challenge could not be properly accessed. Please try again later."
+                                        message: "The challenge could not be properly accessed. Please try again later.",
+                                        css: "home.css",
                                     })
                                 }
                                 // CASE 4: It all works out nicely! Great!
@@ -726,7 +729,8 @@ app.get('/bad', async (req, res) => {
                                     res.render('pages/newbaddecks', {
                                         data: badCardData,
                                         challName: challName,
-                                        isLoggedIn: false
+                                        isLoggedIn: false,
+                                        css: "home.css",
                                     });
                                 }
                             })
@@ -736,7 +740,8 @@ app.get('/bad', async (req, res) => {
             .catch(error => {
                 console.log(error)
                 res.render('pages/baddecksDefault', {
-                    isLoggedIn: false
+                    isLoggedIn: false,
+                    css: "home.css",
                 })
             })
     }

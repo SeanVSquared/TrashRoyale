@@ -3,43 +3,39 @@
 <%- include ('../partials/menu') %>
 
 <main>
-  <div class="container-fluid">
-
-    <!-- Message div -->
-    <div class="col"><%- include ('../partials/message') %></div>
-    
-    <!-- Form control to create a new random challenge. This will make a post request to random -->
-    <form action="/bad" method="POST">
-      <div class="container py-5">
-        <div class="row d-flex justify-content-center align-items-center h-10">
-
-          <div class="col col-xl-5">
-            <div class="card" style="border-radius: 1rem;">
+  <!-- Message div -->
+  <div class="col"><%- include ('../partials/message') %></div>
+  
+  <!-- Form control to create a new random challenge. This will make a post request to random -->
+  <div style="padding-top: 9%;">
+    <div class="random-deck-stats" style="max-width: 30%;">
+      <div>
+        <form action="/bad" method="POST">
+          <div class="container py-5">
+            <div class="card-body d-flex justify-content-center align-items-center h-10">
               <div class="p-4 p-lg-5 text-black">
                 <form>
                   <div class="mb-3">
-                    <span class="h1 fw-bold">Bad Deck Challenge</span>
+                    <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Bad Deck Challenge</h5>
                   </div>
-
                   <div class="pt-1 mb-4">
                     <button class="btn btn-dark btn-lg btn-block" type="submit">New Bad Deck</button>
                   </div>
-
+                  <% if(isLoggedIn) { %>
+                    <div>
+                      <h5 style="padding: 10px; padding-top: 10px;">Bad Challenges Completed: <%=numBadChallengesCompleted  %></h5>
+                    </div>
+                  <% } %>
                 </form>
               </div>
-              <% if(isLoggedIn) { %>
-                <div class="col-md-auto">
-                  <h5>Total Bad Challenges Completed: <%=numBadChallengesCompleted  %></h5>
-                </div>
-                <% } %>
+             
             </div>
           </div>
-
-        </div>
+        </form>
       </div>
-    </form>
-
+    </div>
   </div>
+ 
 </main>
 
 <!-- Include footer partials -->

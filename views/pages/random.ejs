@@ -1,152 +1,146 @@
 
+<!-- Include header and menu partials -->
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
 <main>
-    <!-- this is a bar that has the refresh and info like how many challenges the user completed -->
-    <div class="container">
-      <div class="row justify-content-center">
-        <!--  How many challenges ther user completes-->
-        <!-- This will only happen if the user is logged in -->
-          
-          <!-- refresh button
-          <form action="/random" method="POST">
-            <div class="random-new-deck col-md-auto">
-              <button type="submit" class="btn btn-primary" style="margin-top:7%">New Random Deck</button>
-            </div>
-          </form> -->
-          
-      </div>
-    </div>
-    <!-- here we have card types that will display our 'card' info -->
-    <div class="flex-container">
-      <div class = "flex-child">
-        <div class="random-deck-stats" style="padding-left: 60px;">
+  <div  class="flex-container">
+    <div class="flex-child" style="height: 100%;"> 
+      <div class="random-deck-stats" style="padding-left: 5%;">
+        <div style="padding-bottom: 5%;">
           <% if(isLoggedIn) { %>
-          <div style="padding-bottom: 15px;">
-            <div class="card-body">
-                <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Total Challenges Completed: <%=numChallengesCompleted  %></h5>
-            </div>
-          </div>
-          <% } %>
-          <div style="padding-left: 60px;">
-            <div class="card-body" style="width: 77%; padding-left: 35px;">
-              <h4 style="font-weight: bolder; font-size: 25px; text-align: center;">Deck Information: </h5>
-              <table>
-                <thead>
-                  <tr>
-                    <th style="color: azure; font-weight: bolder; font-size: 20px; padding-bottom: 15px; padding-right: 20px; padding-top: 10px; padding-left: 15px;" scope="col">Card</th>
-                    <th style="color: azure; font-weight: bolder; font-size: 20px; padding-bottom: 15px; padding-right: 20px; padding-top: 10px; padding-left: 15px;" scope="col">Elixer</th>
-                    <th style="color: azure; font-weight: bolder; font-size: 20px; padding-bottom: 15px; padding-right: 20px; padding-top: 10px; padding-left: 15px;" scope="col">Max Level</th>
-                  </tr>
-                </thead>
-                <tbody style="background-color: rgba(255, 255, 255, 0.1); border: solid; border-color: azure;">
-                  <% for(var i = 0; i < data.length; i++) { %>
-                    <tr>
-                      <td class="stat-row">
-                        <h5 class="card-title" style="font-size: 17px; font-weight: bolder; padding: 6px; padding-top: 5px;"><%=data[i].card_name%></h5>
-                      </td>
-                      <td class="stat-row">
-                        <h5 class="card-title" style="font-size: 17px; font-weight: bolder; padding: 6px; padding-top: 5x;"><%=data[i].cost%></h5>
-                      </td>
-                      <td class="stat-row">
-                        <h5 class="card-title" style="font-size: 17px; font-weight: bolder; padding: 6px; padding-top: 5px;"><%=data[i].max_level%></h5>
-                      </td>
-                    </tr>
-                  <% } %>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div style="margin-right: 10%;">
-            <form action="/random" method="POST">
-              <div class="col-md-auto">
-                <button type="submit" class="btn btn-dark btn-lg btn-block" style="margin-top:3%;">Generate New Random Deck</button>
+            <div style="padding-bottom: 15px;">
+              <div class="card-body" style="min-width: 95%;">
+                  <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Random Challenges Completed: <%=numChallengesCompleted  %></h5>
               </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class = "flex-child">
-        <div class="random-deck-card">
-          <div style="padding-left: 235px;padding-bottom: 25px;"> 
-            <div class="card-body" style="padding-bottom: 10px;">
-              <h5 class="card-title" style="padding: 10px;">Challenge Deck: </h5>
             </div>
-          </div>
-          <div style="padding-left: 40px;">
-            <div class="card-body" style="padding-right: 10px; width: 95%;">
-              <table class="card-title">
-                <% for(var i = 0; i < data.length; i = i + 4) { %>
+          <% } %>
+        </div>
+        <div style="padding-left: 8%;">
+          <div class="card-body" style="width: 85%; padding-left: 12%;">
+            <h4 style="font-weight: bolder; font-size: 25px; text-align: center; padding-right: 12%;">Deck Information: </h5>
+            <table>
+              <thead>
+                <tr>
+                  <th style="color: azure; font-weight: bolder; font-size: 20px; padding-bottom: 15px; padding-right: 20px; padding-top: 10px; padding-left: 15px;" scope="col">Card</th>
+                  <th style="color: azure; font-weight: bolder; font-size: 20px; padding-bottom: 15px; padding-right: 20px; padding-top: 10px; padding-left: 15px;" scope="col">Elixer</th>
+                  <th style="color: azure; font-weight: bolder; font-size: 20px; padding-bottom: 15px; padding-right: 20px; padding-top: 10px; padding-left: 15px;" scope="col">Max Level</th>
+                </tr>
+              </thead>
+              <tbody style="background-color: rgba(255, 255, 255, 0.1); border: solid; border-color: azure;">
+                <% for(var i = 0; i < data.length; i++) { %>
                   <tr>
-                    <td class="random-row">
-                      <button type="button" class="random-deck-card-button">
-                        <img class="random-deck-image" src="<%=data[i].icon_url%>">
-                      </button>
+                    <td class="stat-row">
+                      <h5 class="card-title" style="font-size: 17px; font-weight: bolder; padding: 6px; padding-top: 5px;"><%=data[i].card_name%></h5>
                     </td>
-                    <td class="random-row">
-                      <button type="button" class="random-deck-card-button">
-                        <img class="random-deck-image" src="<%=data[i+1].icon_url%>">
-                      </button>
+                    <td class="stat-row">
+                      <h5 class="card-title" style="font-size: 17px; font-weight: bolder; padding: 6px; padding-top: 5x;"><%=data[i].cost%></h5>
                     </td>
-                    <td class="random-row">
-                      <button type="button" class="random-deck-card-button">
-                        <img class="random-deck-image" src="<%=data[i+2].icon_url%>">
-                      </button>
-                    </td>
-                    <td class="random-row">
-                      <button type="button" class="random-deck-card-button">
-                        <img class="random-deck-image" src="<%=data[i+3].icon_url%>">
-                      </button>
+                    <td class="stat-row">
+                      <h5 class="card-title" style="font-size: 17px; font-weight: bolder; padding: 6px; padding-top: 5px;"><%=data[i].max_level%></h5>
                     </td>
                   </tr>
                 <% } %>
-              </table>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="margin-right: 6%;">
+          <form action="/random" method="POST">
+            <div class="col-md-auto">
+              <button type="submit" class="btn btn-dark btn-lg btn-block" style="margin-top:3%;">Generate New Random Deck</button>
             </div>
-          </div>
-          <div style="padding-top: 30px; padding-bottom: 10px;">
-            <!-- Only display the completion progress indicator if a user is logged in-->
-            <% if(isLoggedIn) { %>
-            <!-- Display challenge completion progress -->
-              <% if(isCompleted) { %>
-                <div class="container">
-                  <div class="alert alert-success">
-                    <div class="row justify-content-center">
-                      <img src="">
-                      <h6><%=username%> has completed this challenge!</h6>
-                      <img src="">
-                    </div>
-                  </div>
-                </div>
-              <% } else { %>
-                <div class="container">
-                  <div class="alert alert-danger">
-                    <div class="row justify-content-center">
-                      <h6><%=username%> has NOT completed this challenge!</h6>
-                    </div>
-                    <!-- Form button to check for completion by viewing the clash royale API -->
-                    <button class="btn btn-dark btn-lg btn-block" type="submit" onClick="window.location.reload();">Check Completion!</button>
-                  </div>
-                </div>
-              <% } %>
-            <% } else { %>
-              <div class="container">
-                <div class="alert alert-neutral">
-                  <div class="row justify-content-center">
-                    <h6>Want to save your completion progress?</h6>
-                  </div>
-                  <a href="/login">
-                    <button class="btn btn-dark btn-lg btn-block" type="submit">Log in</button>
-                  </a>
-                </div>
-              </div>
-            <% } %>
-
-          </div>
+          </form>
         </div>
       </div>
     </div>
+    <div class="flex-child">
+      <div class="random-deck-card" style="padding-left: 7%;">
+        <div style="padding-bottom: 5%; padding-left: 23%;">
+          <div class="card-body" style="padding: 2%; min-width: 60%;">
+            <h5 class="card-title" style="padding: 5%;">Challenge Deck: </h5>
+          </div>
+        </div>
+        <div class="card-body" style="width: 95%; padding-left: 7%;">
+          <table class="card-title">
+            <% for(var i = 0; i < data.length; i = i + 4) { %>
+              <tr>
+                <td class="random-row">
+                  <button type="button" class="random-deck-card-button">
+                    <img class="random-deck-image" src="<%=data[i].icon_url%>">
+                  </button>
+                </td>
+                <td class="random-row">
+                  <button type="button" class="random-deck-card-button">
+                    <img class="random-deck-image" src="<%=data[i+1].icon_url%>">
+                  </button>
+                </td>
+                <td class="random-row">
+                  <button type="button" class="random-deck-card-button">
+                    <img class="random-deck-image" src="<%=data[i+2].icon_url%>">
+                  </button>
+                </td>
+                <td class="random-row">
+                  <button type="button" class="random-deck-card-button">
+                    <img class="random-deck-image" src="<%=data[i+3].icon_url%>">
+                  </button>
+                </td>
+              </tr>
+            <% } %>
+          </table>
+        </div>
+        <div style="padding-top: 5%; padding-bottom: 3%; margin-right: 5%;">
+          <!-- Show the completion status of the challenge for the user -->
+          <% if(isLoggedIn) { %>
+            <!-- If logged in, show the progress of the challenge -->
+            <% if(isCompleted) { %>
+              <div class="container">
+                <div class="alert alert-success">
+                  <div class="row justify-content-center">
+                    <img src="">
+                    <h6><%=username%> has completed this challenge!</h6>
+                    <img src="">
+                  </div>
+                </div>
+              </div>
+            <% } else { %>
+              <div class="container">
+                <div class="alert alert-danger">
+                  <div class="row justify-content-center">
+                    <h6><%=username%> has NOT completed this challenge!</h6>
+                  </div>
+                  <!-- Form button to check for completion by viewing the clash royale API -->
+                  <form action="/random" method="POST">
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">Check Completion!</button>
+                  </form>
+                </div>
+              </div>
+            <% } %>
+            
+          <% } else { %>
+            <!-- If not logged in, Have a button linking to the login page -->
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-md-auto">
+                  <p>Want to save your progress?</p>
+                </div>
+                <div class="col-md-auto">
+                  <a href="/pages/login">
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <!-- Include footer partials -->
 <%- include ('../partials/footer') %>
+
+
+
+<!-- How are we connecting the refresh button? Href back to page? API Call like the login from Lab 9? -->
