@@ -515,17 +515,23 @@ app.post('/random', (req, res) => {
 app.post('/bad', (req, res) => {
 
     db.task(task => {
+        //get a random already created bad challenge
         return task.any(`SELECT challenge_id FROM badchallenges OFFSET floor(random() * (SELECT COUNT(*) FROM badchallenges)) LIMIT 1`)
             .then(data => {
+                //check if user is logged in
                 if (req.session.user && req.session.user != null) {
+                    //connect user to the challenge they got
                     return task.any(`INSERT INTO users_to_bad (user_id, challenge_id, is_completed) values (${req.session.user.user_id}, ${data[0].challenge_id}, false) RETURNING challenge_id`)
                         .then(data => {
+                            //render the bad page with the challenge they got
                             res.redirect(`/bad?badid=${data[0].challenge_id}`)
                         })
                 } else {
+                     //render the bad page with the challenge they got
                     res.redirect(`/bad?badid=$${data[0].challenge_id}`)
                 }
             })
+            //catch errors
             .catch(error => {
                 console.log(error);
                 res.render('pages/baddecksDefault', {
@@ -551,7 +557,6 @@ app.get('/bad', async (req, res) => {
         // Create a query for the database
         const badQuery = `SELECT * FROM badchallenges WHERE challenge_id = '${badChallID}'`;
 
-
         // Query the database with this request in task form for multiple queries
         db.task(task => {
             // Query the database for the challenge ID
@@ -562,14 +567,18 @@ app.get('/bad', async (req, res) => {
                     let challName = data[0].challenge_name;
                     // CASE 1: The data is null. This means that a challenge with this ID does not exist
                     if (!challenge) {
-                        // Render the new random page with a message stating that the challenge could not be found
+                        // Render the new bad page with a message stating that the challenge could not be found
                         // console.log("Could not find a challenge of ID: " + challengeID);
                         // Deliver a message to the page
+                        //Check if user is logged in
                         if (req.session.user && req.session.user != null) {
+                            //Render the pahe with the users information and the error message
+                            //Fetch the number of bad challenges completed 
                             return task.any(`SELECT bad_challenges_completed FROM users WHERE user_id = ${req.session.user.user_id}`)
                                 .then(data => {
+                                    //Save number of bad challenges
                                     let numBadChallengesCompleted = data[0].bad_challenges_completed;
-
+                                    //Render the page to get new bad challenge
                                     res.render('pages/baddecksDefault', {
                                         error:  true,
                                         message: "A challenge of this ID does not exist.",
@@ -579,6 +588,7 @@ app.get('/bad', async (req, res) => {
                                     })
                                 })
                         } else {
+                            //Render the page with the error
                             res.render('pages/baddecksDefault', {
                                 error: true,
                                 message: "A challenge of this ID does not exist.",
@@ -605,9 +615,9 @@ app.get('/bad', async (req, res) => {
                                 }
                                 // CASE 4: It all works out nicely! Great!
                                 let badCardData = data;
-
+                                //Check if user is logged in
                                 if (req.session.user && req.session.user != null) {
-
+                                    //Get clash tag from user session
                                     const clashTag = req.session.user.tag;
                                     const tag = clashTag.replace('#', '%23');
 
@@ -623,12 +633,13 @@ app.get('/bad', async (req, res) => {
                                         .catch(error => {
                                             console.log(error);
                                         })
-
+                                    //Get the recent matches
                                     let recentMatchesForBad = battleLog.data;
 
                                     recentMatchesForBad.forEach(match => {
+                                        //Get the cards they played with
                                         let cards = match.team[0].cards;
-
+                                        //Get all the cardIDs
                                         let cardIDs = [cards[0].id, cards[1].id, cards[2].id, cards[3].id, cards[4].id, cards[5].id, cards[6].id, cards[7].id];
 
                                         db.task(task => {
@@ -639,7 +650,7 @@ app.get('/bad', async (req, res) => {
 
                                                     return task.any(badhashquery)
                                                         .then(data => {
-
+                                                            //Check for win
                                                             if (data[0]) {
                                                                 let win = false;
                                                                 if (match.team[0].crowns == match.opponent[0].crowns) {
@@ -669,14 +680,19 @@ app.get('/bad', async (req, res) => {
                                                 console.log(error)
                                             })
                                     })
+                                    //Get the number of bad challeneges completed
                                     return task.any(`SELECT bad_challenges_completed FROM users WHERE user_id = ${req.session.user.user_id}`)
                                         .then(data => {
+                                            //Save this value
                                             let numBadChallengesCompleted = data[0].bad_challenges_completed;
 
+                                            //See if a user has attempted this specific challenge
                                             const badQueryUserToChl = `SELECT * FROM (SELECT * FROM users_to_bad WHERE user_id = ${req.session.user.user_id}) AS userchallenges WHERE challenge_id = ${badChallID}`;
                                             return task.any(badQueryUserToChl)
                                                 .then(data => {
+                                                    //Check if a return from the DB was made
                                                     if (data[0]) {
+                                                        //If there was a return made, render the page with completion progress
                                                         res.render('pages/newbaddecks', {
                                                             data: badCardData,
                                                             challName: challName,
@@ -687,6 +703,7 @@ app.get('/bad', async (req, res) => {
                                                             css: "home.css"
                                                         });
                                                     } else {
+                                                        //If nothing returnred they havent attempted this yet and we should add into the DB
                                                         return task.any(`INSERT INTO users_to_bad (user_id, challenge_id, is_completed) values (${req.sessions.user.user_id}, ${badChallID}, true) RETURNING is_completed`)
                                                             .then(data => {
                                                                 res.render('pages/newbaddecks', {
