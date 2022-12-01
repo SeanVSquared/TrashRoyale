@@ -240,7 +240,6 @@ app.get('/random', async (req, res) => {
 
               // Loop through each match to check if the correct cards were used
               recentMatches.forEach(match => {
-                console.log("Checking a Match");
                 // Pull the cards played
                 let cards = match.team[0].cards;
                 // Create a vector of the card IDs from the match data
@@ -248,7 +247,7 @@ app.get('/random', async (req, res) => {
                 // This will be the clash royale version of the ID. we need to convert it to our IDs first, so do this with a database request
                 db.task(task => {
                   return task.any(`SELECT * FROM cards WHERE clash_id IN ($1, $2, $3, $4, $5, $6, $7, $8) ORDER BY card_id`, cardIDs)
-                  .then(data => {
+                  .then(async data => {
                     // With the cards, run the hashing algorithm
                     let newCards = data;
                     let dotHash = cantorPair( cantorPair(newCards[0].card_id, newCards[1].card_id), newCards[2].card_id );
@@ -259,19 +258,19 @@ app.get('/random', async (req, res) => {
                     // Query the database
                     return task.any(hashquery)
                     .then(data => {
-                      console.log("MATCH found for a deck!")
                       // If there is a return to the data, we have a match in the database!
                       if(data[0]) {
+                        console.log("MATCH found for a deck!")
                         // Check if the player won
                         // Verify if the match was won
                         let win = false;
                         if(match.team[0].crowns == match.opponent[0].crowns) {
-                            win = false;
+                          win = false;
                         } else if (match.team[0].crowns > match.opponent[0].crowns) {
                           console.log("THEY WON!")
-                            win = true;
+                          win = true;
                         } else {
-                            win = false;
+                          win = false;
                         }
                         if(win) {
                           // If the player won the challenge, we need to mark it as complete and update their total
@@ -280,17 +279,15 @@ app.get('/random', async (req, res) => {
                             console.log("They won so attempting to increment the challenges completed")
                             // Increment the count on this user's table
                             incrementUserChallengesCompleted(req.session.user.user_id);
-                            // Close the task
-                            task.end();
                           })
 
                         } else {
+                          console.log("They did not win.")
                           // If they didnt win, we don't need to do naything else
-                          task.end();
                         }
                       } else {
+                        console.log("No match found.")
                         // If there was not a return, we don't need to do anything else
-                        task.end();
                       }
 
                     })
@@ -353,7 +350,8 @@ app.get('/random', async (req, res) => {
               res.render('pages/random', {
                 // Give the card data
                 data: cardData,
-                isLoggedIn: false
+                isLoggedIn: false,
+                css: "home.css"
               });
             }
 
@@ -367,7 +365,8 @@ app.get('/random', async (req, res) => {
       // Handle Errors
       console.log(error)
       res.render('pages/newrandom', {
-        isLoggedIn: false
+        isLoggedIn: false,
+        css: "home.css"
       })
     })
 
@@ -779,7 +778,7 @@ function incrementUserChallengesCompleted(user_id) {
   // First, query the database for the current number of challenges completed
   db.any(`SELECT count(*) FROM (SELECT * FROM users_to_randoms WHERE user_id = ${user_id})) WHERE is_completed = true`)
   .then(data => {
-    console.log(data[0])
+    console.log("Incrementing Challenges")
     // With this result, add 1, and reinsert into the database
     let newCompleted = data[0] + 1;
     return db.any(`UPDATE users SET random_challenges_completed = ${newCompleted} WHERE user_id = ${user_id} RETURNING random_challenges_completed`)

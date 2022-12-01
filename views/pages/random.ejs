@@ -22,13 +22,13 @@
     <div class="flex-container">
       <div class = "flex-child">
         <div class="random-deck-stats" style="padding-left: 60px;">
+          <% if(isLoggedIn) { %>
           <div style="padding-bottom: 15px;">
             <div class="card-body">
-              <% if(isLoggedIn) { %>
                 <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Total Challenges Completed: <%=numChallengesCompleted  %></h5>
-              <% } %>
             </div>
           </div>
+          <% } %>
           <div style="padding-left: 60px;">
             <div class="card-body" style="width: 77%; padding-left: 35px;">
               <h4 style="font-weight: bolder; font-size: 25px; text-align: center;">Deck Information: </h5>
@@ -105,29 +105,43 @@
             </div>
           </div>
           <div style="padding-top: 30px; padding-bottom: 10px;">
-            <% if(isCompleted) { %>
-              <div class="container">
-                <div class="alert alert-success">
-                  <div class="row justify-content-center">
-                    <img src="">
-                    <h6><%=username%> has completed this challenge!</h6>
-                    <img src="">
+            <!-- Only display the completion progress indicator if a user is logged in-->
+            <% if(isLoggedIn) { %>
+            <!-- Display challenge completion progress -->
+              <% if(isCompleted) { %>
+                <div class="container">
+                  <div class="alert alert-success">
+                    <div class="row justify-content-center">
+                      <img src="">
+                      <h6><%=username%> has completed this challenge!</h6>
+                      <img src="">
+                    </div>
                   </div>
                 </div>
-              </div>
+              <% } else { %>
+                <div class="container">
+                  <div class="alert alert-danger">
+                    <div class="row justify-content-center">
+                      <h6><%=username%> has NOT completed this challenge!</h6>
+                    </div>
+                    <!-- Form button to check for completion by viewing the clash royale API -->
+                    <button class="btn btn-dark btn-lg btn-block" type="submit" onClick="window.location.reload();">Check Completion!</button>
+                  </div>
+                </div>
+              <% } %>
             <% } else { %>
               <div class="container">
-                <div class="alert alert-danger">
+                <div class="alert alert-neutral">
                   <div class="row justify-content-center">
-                    <h6><%=username%> has NOT completed this challenge!</h6>
+                    <h6>Want to save your completion progress?</h6>
                   </div>
-                  <!-- Form button to check for completion by viewing the clash royale API -->
-                  <form action="/random" method="POST">
-                    <button class="btn btn-dark btn-lg btn-block" type="submit">Check Completion!</button>
-                  </form>
+                  <a href="/login">
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">Log in</button>
+                  </a>
                 </div>
               </div>
             <% } %>
+
           </div>
         </div>
       </div>
@@ -136,7 +150,3 @@
 
 <!-- Include footer partials -->
 <%- include ('../partials/footer') %>
-
-
-
-<!-- How are we connecting the refresh button? Href back to page? API Call like the login from Lab 9? -->
