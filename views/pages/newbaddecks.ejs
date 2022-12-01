@@ -11,7 +11,7 @@
           <% if(isLoggedIn) { %>
             <div style="padding-bottom: 15px;">
               <div class="card-body" style="min-width: 95%;">
-                  <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Random Challenges Completed: <%=numChallengesCompleted  %></h5>
+                  <h5 class="card-title" style="padding: 20px; padding-top: 30px;">Bad Challenges Completed: <%=numBadChallengesCompleted  %></h5>
               </div>
             </div>
           <% } %>
@@ -46,9 +46,9 @@
           </div>
         </div>
         <div style="margin-right: 6%;">
-          <form action="/random" method="POST">
+          <form action="/bad" method="POST">
             <div class="col-md-auto">
-              <button type="submit" class="btn btn-dark btn-lg btn-block" style="margin-top:3%;">Generate New Random Deck</button>
+              <button type="submit" class="btn btn-dark btn-lg btn-block" style="margin-top:3%;">New Bad Deck</button>
             </div>
           </form>
         </div>

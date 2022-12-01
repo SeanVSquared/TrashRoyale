@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS users(
   max_streak SMALLINT,
   daily_challenges_completed SMALLINT,
   random_challenges_completed SMALLINT,
+  bad_challenges_completed SMALLINT,
   clash_tag VARCHAR(15)
 );
 
@@ -93,6 +94,12 @@ CREATE TABLE IF NOT EXISTS badchallenges(
   card_id_6 SMALLINT,
   card_id_7 SMALLINT,
   card_id_8 SMALLINT
+);
+
+CREATE TABLE IF NOT EXISTS users_to_bad(
+  user_id SMALLINT,
+  challenge_id SMALLINT,
+  is_completed BOOLEAN
 );
 
 -- create a new table to convert from a user's serial ID to the challenge ID based on
