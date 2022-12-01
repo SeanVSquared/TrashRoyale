@@ -1,26 +1,46 @@
 <!-- Include header and menu partials -->
 <%- include ('../partials/header') %>
-  <%- include ('../partials/menu') %>
+<%- include ('../partials/menu') %>
 
-    <main>
-      <div class="container-fluid">
+<main>
+  <div class="container-fluid">
 
-        <!-- Message div -->
-        <div class="col">
-          <%- include ('../partials/message') %>
+    <!-- Message div -->
+    <div class="col"><%- include ('../partials/message') %></div>
+    
+    <!-- Form control to create a new random challenge. This will make a post request to random -->
+    <form action="/bad" method="POST">
+      <div class="container py-5">
+        <div class="row d-flex justify-content-center align-items-center h-10">
+
+          <div class="col col-xl-5">
+            <div class="card" style="border-radius: 1rem;">
+              <div class="p-4 p-lg-5 text-black">
+                <form>
+                  <div class="mb-3">
+                    <span class="h1 fw-bold">Bad Deck Challenge</span>
+                  </div>
+
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">New Bad Deck</button>
+                  </div>
+
+                </form>
+              </div>
+              <% if(isLoggedIn) { %>
+                <div class="col-md-auto">
+                  <h5>Total Bad Challenges Completed: <%=numBadChallengesCompleted  %></h5>
+                </div>
+                <% } %>
+            </div>
+          </div>
+
         </div>
-
-        <!-- Form control to create a new random challenge. This will make a post request to random -->
-        <p>Are you lost????</p>
-        <p>Heres what you can do:</p>
-        <p>DEFAULT BAD DECK PAGE GUYS, ADD SOME BUTTONS TO GET NEW BAD CHALLENGE</p>
-
-        <form action="/bad" method="POST">
-          <button type="submit" class="btn btn-primary">Random Bad</button>
-        </form>
-
       </div>
-    </main>
+    </form>
 
-    <!-- Include footer partials -->
-    <%- include ('../partials/footer') %>
+  </div>
+</main>
+
+<!-- Include footer partials -->
+<%- include ('../partials/footer') %>
