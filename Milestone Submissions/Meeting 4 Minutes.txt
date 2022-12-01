@@ -1,27 +1,29 @@
 Week 4 Meeting Notes
 
 Sean:
-Completed functionality of random deck page
-Successfully checks if the user used the deck
+  Completed functionality of random deck page
+  Successfully checks if the user used the deck
 Tobey:
-Working on bad deck page
-Most functionality complete
-Needs to push branch and include styling
+  Working on bad deck page
+  Most functionality complete
+  Needs to push branch and include styling
+Derek:
+  Worked on leaderboard and adding stats for recent matches on home page.
 Nic:
-Worked on unifying the styling of the pages
+  Worked on unifying the styling of the pages
 Daniel:
-Working on gathering data from Clash Royale API. Will create backend features that will show metrics about player's performance.
+  Working on gathering data from Clash Royale API. Will create backend features that will show metrics about player's performance.
 Niko:
-Working on the account page
+  Working on the account page
 
 
 To-Do and Other notes:
-Overall really good progress
-Complete testing document by the end of Friday
-Need ratings
-Need architecture diagram
-Add future enhancements slide
-Things we can do in the future (things we could fix, things we could add, etc.)
-Project Report due Friday
-Complete Video
-Not everyone has to speak for video
+  Overall really good progress
+  Complete testing document by the end of Friday
+  Need ratings
+  Need architecture diagram
+  Add future enhancements slide
+  Things we can do in the future (things we could fix, things we could add, etc.)
+  Project Report due Friday
+  Complete Video
+    Not everyone has to speak for video
