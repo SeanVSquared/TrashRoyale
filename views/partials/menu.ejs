@@ -1,61 +1,103 @@
 <header>  
-    
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/home">TrashRoyale</a>
-            <div  id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
-                </li>
-                </ul>
-            </div>
-            <div  id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/random">Random Deck<span class="sr-only">(current)</span></a>
-                </li>
-                </ul>
-            </div>
-            <div  id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/bad">Bad Deck<span class="sr-only">(current)</span></a>
-            </li>
-            </ul>
-        </div>
-        <div  id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/cards">Cards<span class="sr-only">(current)</span></a>
-            </li>
-            </ul>
-        </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+
+        <!-- Logo Image -->
+        <div class="col-auto">
+          <a class="navbar-brand" href="/home">
             <img src="/images/LogoTry2.png" alt="Italian Trulli" class="mx-auto" style="height: 50px">
-            <% if(typeof username === 'undefined') { %>
-            <div>
-                <ul style="float: right;" class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link enabled" href="/login">Login</a>
+          </a>
+        </div>
+
+        <!-- Links -->
+        <div class="d-flex align-items-center">
+          <div class="col-auto">
+            <!-- Home Link -->
+            <div id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link enabled" href="/register">Register</a>
-                </li>
-                </ul>
+              </ul>
             </div>
-            <% } else { console.log(username) %>
+          </div>
+
+          <div class="col-auto">
+            <!-- Random Deck Link -->
+            <div id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/random">Random Deck<span class="sr-only">(current)</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-auto">
+            <!-- Bad DeckLink -->
+            <div  id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/bad">Bad Deck<span class="sr-only">(current)</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-auto">  
+            <!-- Cards Link -->
+            <div  id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/cards">Cards<span class="sr-only">(current)</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+        <div class="col-auto">
+            <div class="d-flex align-items-center">
+              <!-- Login/Register button OR user information -->
+              <% if(typeof username === 'undefined') { %>
                 <div>
-                <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= username %>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/account">Account</a>
-                    <a class="dropdown-item" href="/logout">Logout</a>
+                  <ul style="float: right;" class="navbar-nav mr-auto">
+                    <div class="col-auto">
+                      <li class="nav-item">
+                        <a class="nav-link enabled" href="/login">Login</a>
+                      </li>
                     </div>
-                </li>
-                </ul>
+                    <div class="col-auto">
+                      <li class="nav-item">
+                        <a class="nav-link enabled" href="/register">Register</a>
+                      </li>
+                    </div>
+                  </ul>
+                </div>
+                <% } else { //console.log(username) %>
+                  <div>
+                    <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <%= username %>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/account">Account</a>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </li>
+                    </ul>
+                </div>
+              <% } %>
             </div>
-            <% } %>
-        </nav>
+        </div>
+
+      </div>
+    </div>
+
+  </nav>
 </header>
