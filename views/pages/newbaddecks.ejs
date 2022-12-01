@@ -58,7 +58,7 @@
       <div class="random-deck-card" style="padding-left: 7%;">
         <div style="padding-bottom: 5%; padding-left: 23%;">
           <div class="card-body" style="padding: 2%; min-width: 60%;">
-            <h5 class="card-title" style="padding: 5%;">Challenge Deck: </h5>
+            <h5 class="card-title" style="padding: 5%;">Bad Deck: <%=challName%></h5>
           </div>
         </div>
         <div class="card-body" style="width: 95%; padding-left: 7%;">
@@ -110,9 +110,7 @@
                     <h6><%=username%> has NOT completed this challenge!</h6>
                   </div>
                   <!-- Form button to check for completion by viewing the clash royale API -->
-                  <form action="/random" method="POST">
-                    <button class="btn btn-dark btn-lg btn-block" type="submit">Check Completion!</button>
-                  </form>
+                  <button class="btn btn-dark btn-lg btn-block" onClick="window.location.reload();">Check Completion!</button>
                 </div>
               </div>
             <% } %>

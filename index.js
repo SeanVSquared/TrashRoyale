@@ -696,12 +696,14 @@ app.get('/bad', async (req, res) => {
                                           if (data[0].is_completed) {
 
                                           } else {
+                                            console.log("Not completed but won, increment wins");
                                             return task.any(`UPDATE users_to_bad SET is_completed = true WHERE (user_id = ${req.session.user.user_id} AND challenge_id = ${badChallID})`)
                                               .then(data => {
                                                 incrementBadUserChallengesCompleted(req.session.user.user_id);
                                               })
                                           }
                                         } else {
+                                          console.log("Not seen but won, increment wins");
                                           return task.any(`INSERT INTO users_to_bad (user_id, challenge_id, is_completed) values (${req.session.user.user_id}, ${data[0].challenge_id}, true) RETURNING challenge_id`)
                                             .then(data => {
                                               incrementBadUserChallengesCompleted(req.session.user.user_id);
