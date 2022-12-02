@@ -12,34 +12,46 @@
 <%- include ('../partials/menu') %>
 
 <main>
-  <div class="container-fluid" >
-    <h1 style="color:#FFFFFF">This is the card test page</h1>
-    <table class="table border mt-4" style="color:#FFFFFF">
+  <div class="container-fluid pt-3 px-5 mb-5" >
+
+    <div class="d-flex justify-content-between">
+        <h1 style="color:#FFFFFF;">Cards</h1>
+        <form class="d-flex m-2 align-middle" action="/cards/fetch-cards" method="post">
+            <button class="btn btn-success" name="Fetch-Cards" value="Fetch Cards">Fetch Cards</button>
+        </form>
+    </div>
+     
+    <table class="table table-dark border border-dark my-4" style="background-color:#212529AA;">
+        
+        <% if (locals.cards) { %>
+        
         <thead>
             <th class="col-auto align-top" scope="col">ID</th>
             <th class="col-auto align-top" scope="col">NAME</th>
-            <th class="col-auto align-top" scope="col">MAX LEVEL</th>
-            <th class="col-auto align-top" scope="col">COST</th>
-            <th class="col-auto align-top" scope="col">USAGE</th>
-            <th class="col-auto align-top" scope="col">WIN RATE</th>
+            <th class="col-auto align-top" scope="col">MAX LEVEL (RARITY)</th>
+            <th class="col-auto align-top" scope="col">ELIXIR COST</th>
+            <!-- <th class="col-auto align-top" scope="col">USAGE</th> -->
+            <!-- <th class="col-auto align-top" scope="col">WIN RATE</th> -->
             <th class="col-auto align-top" scope="col">IMG</th>
         </thead>
-
+        
         <tbody></tbody>
             <% for(var i=0; i<cards.length; i++) { %>
-                <tr>
+                <tr style="font-size: 2rem;">
                     <td> <%- cards[i].card_id %> </td>
                     <td> <%- cards[i].card_name %> </td>
                     <td> <%- cards[i].max_level %> </td>
                     <td> <%- cards[i].cost %> </td>
-                    <td> <%- cards[i].usage %> </td>
-                    <td> <%- cards[i].winrate %> </td>
                     <td> <img src="<%-cards[i].icon_url%>" width="50px"> </td>
                 </tr>
             <% } %>
         </tbody>
+
+        <% } else { %>
+            <h2 style="color: #FFFFFF;"> ERROR: locals.cards could not be found </h2>
+        <% } %>
+
     </table>
-    
   </div>
 </main>
 
