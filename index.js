@@ -827,7 +827,7 @@ app.get('/cards', (req, res) => {
 
     db.any(query)
         .then(cards => {
-        console.log(cards);
+        // console.log(cards);
         res.render('pages/cards', {
             cards,
             title: "Cards",
@@ -841,6 +841,47 @@ app.get('/cards', (req, res) => {
         });
 });
 
+
+// Fetch new clash royale cards and card data from the clash royale API.
+app.post('/cards/fetch-cards', (req,res) => {
+
+  console.log("Fetch Cards");
+
+  var insertQuery = "";
+  
+  axios({
+    url: 'https://api.clashroyale.com/v1/cards',
+        method: 'get',
+        dataType:'json',
+        headers: {
+            "Authorization": `Bearer ${process.env.API_KEY}`
+        }
+    })
+    .then(cards => {
+
+        // console.log(cards.data.items);
+
+        // Fetch Cards from the Clash Royale Database
+        for (var i=0; i<cards.data.items.length; i++) {
+          var card = cards.data.items[i];
+          insertQuery += `INSERT INTO cards (card_name, clash_id, max_level, icon_url, cost) VALUES ('${card.name}', ${card.id}, ${card.maxLevel}, '${card.iconUrls.medium}', 0) ON CONFLICT DO NOTHING;\n`;
+        }
+
+        console.log(insertQuery);
+
+        db.any(insertQuery).catch(error => {
+          console.log("Fetch Cards: Query is invalid");
+        });
+
+        res.redirect('/cards');
+
+    })
+    .catch(error => { 
+        console.log("Fetch Cards Error");
+        res.redirect('/home');
+    })
+})
+
 // Get Request to view and test attribute database 
 app.get('/attributes', (req, res) => {
     console.log("GET/attributes");
@@ -850,7 +891,7 @@ app.get('/attributes', (req, res) => {
     res.render('pages/attributes');
 });
 
-//Authentication Middleware
+//Authentication Middleware TODO Make this only apply where Authentication is necessary
 const auth = (req, res, next) => {
     if (!req.session.user) {
       // Default to register page.
@@ -859,7 +900,7 @@ const auth = (req, res, next) => {
     next();
 };
 
-  // Authentication Required
+// Authentication Required
 app.use(auth);
 
 // GET Request for /home
